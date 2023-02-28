@@ -5,9 +5,14 @@ import { RxAvatar } from "react-icons/rx";
 
 export default function Navbar() {
   const [navOpen, setNavOpen] = useState(false);
+  const [profileOpen, setProfileOpen] = useState(false);
 
-  const handleClick = () => {
+  const handleNavClick = () => {
     setNavOpen(!navOpen);
+  };
+
+  const handleProfileClick = () => {
+    setProfileOpen(!profileOpen);
   };
 
   return (
@@ -19,7 +24,7 @@ export default function Navbar() {
           {/* Nav bar hamburger icon */}
           <div className="rounded-md bg-secondary/50 px-1">
             <button
-              onClick={handleClick}
+              onClick={handleNavClick}
               id="menu-btn"
               className={`${
                 navOpen ? "open" : ""
@@ -85,8 +90,14 @@ export default function Navbar() {
           </ul>
 
           {/* Avatar */}
-          <div>
+          <div onClick={handleProfileClick}>
             <RxAvatar className="h-8 w-8 text-white" />
+            <div className={`${profileOpen ? "" : "hidden"}`}>
+              <ul className="absolute right-5 top-14 rounded-md bg-white px-6 py-4 font-medium text-secondary">
+                <li>Your Profile</li>
+                <li>Sign Out</li>
+              </ul>
+            </div>
           </div>
         </div>
 
@@ -102,7 +113,7 @@ export default function Navbar() {
           {/* Mobile menu items */}
           <ul className="absolute left-6 right-6 mt-10 flex flex-col items-center justify-center gap-4 bg-secondary/20 py-8 font-bold drop-shadow-md sm:w-auto">
             <NavLink
-              onClick={handleClick}
+              onClick={handleNavClick}
               to="/"
               className={({ isActive }) =>
                 `${
@@ -113,7 +124,7 @@ export default function Navbar() {
               Home
             </NavLink>
             <NavLink
-              onClick={handleClick}
+              onClick={handleNavClick}
               to="/B"
               className={({ isActive }) =>
                 `${
@@ -124,7 +135,7 @@ export default function Navbar() {
               Team
             </NavLink>
             <NavLink
-              onClick={handleClick}
+              onClick={handleNavClick}
               to="/C"
               className={({ isActive }) =>
                 `${
@@ -135,7 +146,7 @@ export default function Navbar() {
               Calendar
             </NavLink>
             <NavLink
-              onClick={handleClick}
+              onClick={handleNavClick}
               to="/D"
               className={({ isActive }) =>
                 `${
