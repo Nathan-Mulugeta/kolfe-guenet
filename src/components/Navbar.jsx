@@ -91,8 +91,8 @@ export default function Navbar() {
         {/* Menu items container */}
         <div
           className={`${
-            navOpen ? "opacity-100" : "hidden opacity-0"
-          } transition duration-500 ease-in-out md:hidden
+            navOpen ? "opacity-100" : "-translate-x-full opacity-0"
+          } transition duration-150 ease-in-out md:hidden
           `}
         >
           {/* Mobile menu items */}
