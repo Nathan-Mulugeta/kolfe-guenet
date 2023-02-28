@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import churchLogo from "../assets/jpg/logo.png";
+import { RxAvatar } from "react-icons/rx";
 
 export default function Navbar() {
   const [navOpen, setNavOpen] = useState(false);
@@ -11,28 +12,29 @@ export default function Navbar() {
 
   return (
     <>
-      <nav className=" fixed top-0 left-0 right-0 bg-white py-4 drop-shadow-md">
+      <nav className=" fixed top-0 left-0 right-0 bg-secondary/20 py-4 drop-shadow-md">
         {/* Nav bar container */}
 
         <div className="container mx-auto flex items-center justify-between px-4">
           {/* Nav bar hamburger icon */}
-
-          <button
-            onClick={handleClick}
-            id="menu-btn"
-            className={`${
-              navOpen ? "open" : ""
-            } hamburger focus:outline-none md:hidden`}
-          >
-            <span className="hamburger-top"></span>
-            <span className="hamburger-middle"></span>
-            <span className="hamburger-bottom"></span>
-          </button>
+          <div className="rounded-md bg-secondary/50 px-1">
+            <button
+              onClick={handleClick}
+              id="menu-btn"
+              className={`${
+                navOpen ? "open" : ""
+              } hamburger focus:outline-none md:hidden`}
+            >
+              <span className="hamburger-top"></span>
+              <span className="hamburger-middle"></span>
+              <span className="hamburger-bottom"></span>
+            </button>
+          </div>
 
           {/* Church Logo */}
           <NavLink to="/">
             <img
-              className="h-8 w-auto"
+              className="h-8 w-auto rounded-md bg-white"
               src={churchLogo}
               alt="Kolfe Guenet Church"
             />
@@ -44,18 +46,22 @@ export default function Navbar() {
               to="/"
               className={({ isActive }) =>
                 `${
-                  isActive ? "bg-secondary text-white" : "hover:text-gray-800"
-                } rounded-md px-3 py-1 text-gray-400`
+                  isActive
+                    ? "bg-secondary/50 text-white"
+                    : "hover:text-gray-800"
+                } rounded-md px-3 py-1 text-white transition duration-200 ease-in-out`
               }
             >
-              Price
+              Home
             </NavLink>
             <NavLink
               to="/B"
               className={({ isActive }) =>
                 `${
-                  isActive ? "bg-secondary text-white" : "hover:text-gray-800"
-                } rounded-md px-3 py-1 text-gray-400`
+                  isActive
+                    ? "bg-secondary/50 text-white"
+                    : "hover:text-gray-800"
+                } rounded-md px-3 py-1 text-white transition duration-200 ease-in-out`
               }
             >
               Team
@@ -64,8 +70,10 @@ export default function Navbar() {
               to="/C"
               className={({ isActive }) =>
                 `${
-                  isActive ? "bg-secondary text-white" : "hover:text-gray-800"
-                } rounded-md px-3 py-1 text-gray-400`
+                  isActive
+                    ? "bg-secondary/50 text-white"
+                    : "hover:text-gray-800"
+                } rounded-md px-3 py-1 text-white transition duration-200 ease-in-out`
               }
             >
               Calendar
@@ -74,8 +82,10 @@ export default function Navbar() {
               to="/D"
               className={({ isActive }) =>
                 `${
-                  isActive ? "bg-secondary text-white" : "hover:text-gray-800"
-                } rounded-md px-3 py-1 text-gray-400`
+                  isActive
+                    ? "bg-secondary/50 text-white"
+                    : "hover:text-gray-800"
+                } rounded-md px-3 py-1 text-white transition duration-200 ease-in-out`
               }
             >
               Projects
@@ -83,7 +93,9 @@ export default function Navbar() {
           </ul>
 
           {/* Avatar */}
-          <div>Account</div>
+          <div>
+            <RxAvatar className="h-8 w-8 text-white" />
+          </div>
         </div>
 
         {/* Menu items for mobile */}
@@ -102,19 +114,23 @@ export default function Navbar() {
               to="/"
               className={({ isActive }) =>
                 `${
-                  isActive ? "bg-secondary text-white" : "hover:text-gray-800"
-                } rounded-md px-3 py-1 text-gray-400`
+                  isActive
+                    ? "bg-secondary/50 text-white"
+                    : "hover:text-gray-800"
+                } rounded-md px-3 py-1 text-white transition duration-200 ease-in-out`
               }
             >
-              Price
+              Home
             </NavLink>
             <NavLink
               onClick={handleClick}
               to="/B"
               className={({ isActive }) =>
                 `${
-                  isActive ? "bg-secondary text-white" : "hover:text-gray-800"
-                } rounded-md px-3 py-1 text-gray-400`
+                  isActive
+                    ? "bg-secondary/50 text-white"
+                    : "hover:text-gray-800"
+                } rounded-md px-3 py-1 text-white transition duration-200 ease-in-out`
               }
             >
               Team
@@ -124,8 +140,10 @@ export default function Navbar() {
               to="/C"
               className={({ isActive }) =>
                 `${
-                  isActive ? "bg-secondary text-white" : "hover:text-gray-800"
-                } rounded-md px-3 py-1 text-gray-400`
+                  isActive
+                    ? "bg-secondary/50 text-white"
+                    : "hover:text-gray-800"
+                } rounded-md px-3 py-1 text-white transition duration-200 ease-in-out`
               }
             >
               Calendar
@@ -135,8 +153,10 @@ export default function Navbar() {
               to="/D"
               className={({ isActive }) =>
                 `${
-                  isActive ? "bg-secondary text-white" : "hover:text-gray-800"
-                } rounded-md px-3 py-1 text-gray-400`
+                  isActive
+                    ? "bg-secondary/50 text-white"
+                    : "hover:text-gray-800"
+                } rounded-md px-3 py-1 text-white transition duration-200 ease-in-out`
               }
             >
               Price

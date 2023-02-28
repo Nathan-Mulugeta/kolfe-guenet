@@ -16,11 +16,11 @@
 .hamburger-middle,
 .hamburger-bottom {
   position: absolute;
-  top: 5px;
+  top: 1px;
   left: 0;
   width: 24px;
   height: 2px;
-  background: #000;
+  background: #fff;
   transform: rotate(0);
   transition: all 0.5s;
 }
@@ -48,4 +48,13 @@
 
 .open .hamburger-bottom {
   transform: rotate(-45deg) translateY(6px) translate(-6px);
+}
+
+/* Hero section */
+
+#hero {
+  background: url("./assets/jpg/heroBackground.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: bottom center;
 }

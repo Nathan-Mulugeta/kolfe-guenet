@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Navbar from "./components/Navbar";
-import A from "./components/A";
+import Home from "./components/Home";
+import Footer from "./components/Footer";
 import B from "./components/B";
 import C from "./components/C";
 import D from "./components/D";
@@ -8,15 +9,18 @@ import D from "./components/D";
 function App() {
   return (
     <Router>
-      <Navbar />
-      <div style={{ marginTop: "80px" }}>
+      <header>
+        <Navbar />
+      </header>
+      <main className="">
         <Routes>
-          <Route path="/" element={<A />} />
+          <Route path="/" element={<Home />} />
           <Route path="/B" element={<B />} />
           <Route path="/C" element={<C />} />
           <Route path="/D" element={<D />} />
         </Routes>
-      </div>
+      </main>
+      <Footer />
     </Router>
   );
 }
