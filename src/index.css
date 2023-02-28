@@ -2,6 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Blue highlight Reset */
+:focus {
+  outline: none !important;
+}
+input,
+textarea,
+button,
+select,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
 /* Hamburger Menu */
 
 .hamburger {

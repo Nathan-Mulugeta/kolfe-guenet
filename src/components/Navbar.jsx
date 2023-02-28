@@ -46,9 +46,7 @@ export default function Navbar() {
               to="/"
               className={({ isActive }) =>
                 `${
-                  isActive
-                    ? "bg-secondary/50 text-white"
-                    : "hover:text-gray-800"
+                  isActive ? "bg-secondary/50 text-white" : "hover:text-primary"
                 } rounded-md px-3 py-1 text-white transition duration-200 ease-in-out`
               }
             >
@@ -58,9 +56,7 @@ export default function Navbar() {
               to="/B"
               className={({ isActive }) =>
                 `${
-                  isActive
-                    ? "bg-secondary/50 text-white"
-                    : "hover:text-gray-800"
+                  isActive ? "bg-secondary/50 text-white" : "hover:text-primary"
                 } rounded-md px-3 py-1 text-white transition duration-200 ease-in-out`
               }
             >
@@ -70,9 +66,7 @@ export default function Navbar() {
               to="/C"
               className={({ isActive }) =>
                 `${
-                  isActive
-                    ? "bg-secondary/50 text-white"
-                    : "hover:text-gray-800"
+                  isActive ? "bg-secondary/50 text-white" : "hover:text-primary"
                 } rounded-md px-3 py-1 text-white transition duration-200 ease-in-out`
               }
             >
@@ -82,9 +76,7 @@ export default function Navbar() {
               to="/D"
               className={({ isActive }) =>
                 `${
-                  isActive
-                    ? "bg-secondary/50 text-white"
-                    : "hover:text-gray-800"
+                  isActive ? "bg-secondary/50 text-white" : "hover:text-primary"
                 } rounded-md px-3 py-1 text-white transition duration-200 ease-in-out`
               }
             >
@@ -108,15 +100,13 @@ export default function Navbar() {
           `}
         >
           {/* Mobile menu items */}
-          <ul className="absolute left-6 right-6 mt-10 flex flex-col items-center justify-center gap-4 bg-white py-8 font-bold drop-shadow-md sm:w-auto">
+          <ul className="absolute left-6 right-6 mt-10 flex flex-col items-center justify-center gap-4 bg-secondary/20 py-8 font-bold drop-shadow-md sm:w-auto">
             <NavLink
               onClick={handleClick}
               to="/"
               className={({ isActive }) =>
                 `${
-                  isActive
-                    ? "bg-secondary/50 text-white"
-                    : "hover:text-gray-800"
+                  isActive ? "bg-secondary/50 text-white" : "hover:text-primary"
                 } rounded-md px-3 py-1 text-white transition duration-200 ease-in-out`
               }
             >
@@ -127,9 +117,7 @@ export default function Navbar() {
               to="/B"
               className={({ isActive }) =>
                 `${
-                  isActive
-                    ? "bg-secondary/50 text-white"
-                    : "hover:text-gray-800"
+                  isActive ? "bg-secondary/50 text-white" : "hover:text-primary"
                 } rounded-md px-3 py-1 text-white transition duration-200 ease-in-out`
               }
             >
@@ -140,9 +128,7 @@ export default function Navbar() {
               to="/C"
               className={({ isActive }) =>
                 `${
-                  isActive
-                    ? "bg-secondary/50 text-white"
-                    : "hover:text-gray-800"
+                  isActive ? "bg-secondary/50 text-white" : "hover:text-primary"
                 } rounded-md px-3 py-1 text-white transition duration-200 ease-in-out`
               }
             >
@@ -153,9 +139,7 @@ export default function Navbar() {
               to="/D"
               className={({ isActive }) =>
                 `${
-                  isActive
-                    ? "bg-secondary/50 text-white"
-                    : "hover:text-gray-800"
+                  isActive ? "bg-secondary/50 text-white" : "hover:text-primary"
                 } rounded-md px-3 py-1 text-white transition duration-200 ease-in-out`
               }
             >
