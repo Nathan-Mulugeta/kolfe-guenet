@@ -46,7 +46,7 @@ export default function Navbar() {
   return (
     <>
       <nav
-        className=" fixed top-0 left-0 right-0 bg-secondary/20 py-4 drop-shadow-md"
+        className=" fixed top-0 left-0 right-0 bg-secondary py-4 drop-shadow-md md:bg-secondary/20"
         ref={navRef}
       >
         {/* Nav bar container */}
@@ -121,12 +121,16 @@ export default function Navbar() {
           </ul>
 
           {/* Avatar */}
-          <div onClick={handleProfileClick} ref={profileRef}>
+          <div
+            onClick={handleProfileClick}
+            ref={profileRef}
+            className="relative"
+          >
             <button>
               <RxAvatar className="h-8 w-8 text-white" />
             </button>
             <div className={`${profileOpen ? "" : "hidden"}`}>
-              <ul className="absolute right-16 flex  flex-col gap-2 rounded-md bg-white px-6 py-4 font-medium text-secondary transition-all duration-1000 ease-in-out">
+              <ul className="absolute right-1 flex w-36  flex-col gap-2 rounded-md bg-white px-6 py-4 font-medium text-secondary transition-all duration-1000 ease-in-out">
                 <Link
                   className="hover:text-secondary/75"
                   onClick={handleProfileClick}

@@ -3,6 +3,9 @@ module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     extend: {
+      fontFamily: {
+        glock: ["Gloock", "serif"],
+      },
       colors: {
         primary: "#A3C9D3",
         secondary: "#376570",

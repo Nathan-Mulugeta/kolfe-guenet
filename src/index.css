@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Typography */
+
+@import url("https://fonts.googleapis.com/css2?family=Gloock&display=swap");
+
 /* Blue highlight Reset */
 :focus {
   outline: none !important;
