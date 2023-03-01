@@ -1,11 +1,39 @@
-import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { useState, useRef, useEffect } from "react";
+import { NavLink, Link } from "react-router-dom";
 import churchLogo from "../assets/jpg/logo.png";
 import { RxAvatar } from "react-icons/rx";
 
 export default function Navbar() {
   const [navOpen, setNavOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
+  const profileRef = useRef(null);
+  const navRef = useRef(null);
+
+  useEffect(() => {
+    document.addEventListener("click", handleProfileClickOutside);
+    return () => {
+      document.removeEventListener("click", handleProfileClickOutside);
+    };
+  }, []);
+
+  useEffect(() => {
+    document.addEventListener("click", handleNavClickOutside);
+    return () => {
+      document.removeEventListener("click", handleNavClickOutside);
+    };
+  }, []);
+
+  const handleProfileClickOutside = (event) => {
+    if (profileRef.current && !profileRef.current.contains(event.target)) {
+      setProfileOpen(false);
+    }
+  };
+
+  const handleNavClickOutside = (event) => {
+    if (navRef.current && !navRef.current.contains(event.target)) {
+      setNavOpen(false);
+    }
+  };
 
   const handleNavClick = () => {
     setNavOpen(!navOpen);
@@ -17,7 +45,10 @@ export default function Navbar() {
 
   return (
     <>
-      <nav className=" fixed top-0 left-0 right-0 bg-secondary/20 py-4 drop-shadow-md">
+      <nav
+        className=" fixed top-0 left-0 right-0 bg-secondary/20 py-4 drop-shadow-md"
+        ref={navRef}
+      >
         {/* Nav bar container */}
 
         <div className="container mx-auto flex items-center justify-between px-4">
@@ -90,12 +121,24 @@ export default function Navbar() {
           </ul>
 
           {/* Avatar */}
-          <div onClick={handleProfileClick}>
-            <RxAvatar className="h-8 w-8 text-white" />
+          <div onClick={handleProfileClick} ref={profileRef}>
+            <button>
+              <RxAvatar className="h-8 w-8 text-white" />
+            </button>
             <div className={`${profileOpen ? "" : "hidden"}`}>
-              <ul className="absolute right-5 top-14 rounded-md bg-white px-6 py-4 font-medium text-secondary">
-                <li>Your Profile</li>
-                <li>Sign Out</li>
+              <ul className="absolute right-16 flex  flex-col gap-2 rounded-md bg-white px-6 py-4 font-medium text-secondary transition-all duration-1000 ease-in-out">
+                <Link
+                  className="hover:text-secondary/75"
+                  onClick={handleProfileClick}
+                >
+                  <li>Your Profile</li>
+                </Link>
+                <Link
+                  className="hover:text-secondary/75"
+                  onClick={handleProfileClick}
+                >
+                  <li>Sign Out</li>
+                </Link>
               </ul>
             </div>
           </div>
@@ -109,6 +152,7 @@ export default function Navbar() {
             navOpen ? "opacity-100" : "-translate-x-full opacity-0"
           } transition duration-150 ease-in-out md:hidden
           `}
+          ref={navRef}
         >
           {/* Mobile menu items */}
           <ul className="absolute left-6 right-6 mt-10 flex flex-col items-center justify-center gap-4 bg-secondary/20 py-8 font-bold drop-shadow-md sm:w-auto">
