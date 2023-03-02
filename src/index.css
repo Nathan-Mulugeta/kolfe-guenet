@@ -18,6 +18,11 @@ a {
   -webkit-tap-highlight-color: transparent;
 }
 
+/* Horizontal scroll reset */
+body {
+  overflow-x: hidden;
+}
+
 /* Hamburger Menu */
 
 .hamburger {
