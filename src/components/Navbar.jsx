@@ -14,10 +14,10 @@ export default function Navbar() {
 
   const svgVariant = {
     hidden: {
-      scale: 100,
+      // scale: 100,
     },
     visible: {
-      scale: [100, 0.5, 1],
+      // scale: [100, 0.5, 1],
       transition: {
         duration: 3,
         ease: "easeInOut",

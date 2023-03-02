@@ -10,6 +10,7 @@ module.exports = {
         primary: "#A3C9D3",
         secondary: "#376570",
         accent: "#57A4D2",
+        words: "#5C5354",
       },
     },
   },
