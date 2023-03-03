@@ -76,6 +76,13 @@ body {
 #hero {
   background: url("./assets/jpg/heroBackground.jpg");
   background-repeat: no-repeat;
+  height: calc(100vh + 10rem);
   background-size: cover;
   background-position: bottom center;
+  clip-path: circle(94.8% at 35% 13%);
+}
+
+.clip {
+  height: calc(100vh + 10rem);
+  clip-path: circle(94.8% at 35% 13%);
 }

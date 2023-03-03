@@ -7,17 +7,17 @@ const containerVariants = {
     transition: {
       type: "spring",
       duration: 0.5,
-      stiffness: 300,
+      //   stiffness: 300,
     },
   },
   hidden: {
     opacity: 0,
-    scale: 0,
+    // scale: 0,
   },
 
   inView: {
     opacity: 1,
-    scale: 1,
+    // scale: 1,
     transition: {
       duraion: 5,
       type: "spring",
@@ -32,7 +32,7 @@ function Card() {
       whileHover="hover"
       initial="hidden"
       whileInView="inView"
-      className="mt-4 flex w-full flex-col items-center justify-center rounded-3xl bg-secondary px-4 py-6 text-center shadow-xl"
+      className="mt-6 flex w-full flex-col items-center justify-center rounded-3xl bg-secondary px-4 py-6 text-center shadow-xl"
     >
       <span className=" rounded-full bg-white px-2 py-2 drop-shadow-lg">
         <GiPeaceDove className="text-5xl text-secondary" />

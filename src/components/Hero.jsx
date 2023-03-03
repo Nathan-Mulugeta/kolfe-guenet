@@ -37,7 +37,7 @@ function Hero() {
   return (
     <section id="hero">
       <div className="bg-secondary/50">
-        <div className="container mx-auto flex h-screen flex-col items-center justify-center space-y-8 md:space-y-16 ">
+        <div className="clip container mx-auto flex h-screen flex-col items-center justify-center space-y-8 md:space-y-16">
           <motion.div
             initial="hidden"
             animate="visible"

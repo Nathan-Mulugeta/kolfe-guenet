@@ -6,6 +6,7 @@ function Home() {
     <>
       <Hero />
       <CardSection />
+      <div className="divider"></div>
     </>
   );
 }
