@@ -101,3 +101,9 @@ body {
     height: 40rem;
   }
 }
+
+/* Footer Divider */
+
+.footerDivider {
+  height: 1px;
+}

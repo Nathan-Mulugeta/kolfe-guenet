@@ -33,7 +33,14 @@ const rightVariants = {
   },
 };
 
-function Hero() {
+function Hero({ ctaRef }) {
+  const scrollToCTA = () => {
+    ctaRef.current.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  };
+
   return (
     <section id="hero">
       <div className="bg-secondary/50">
@@ -61,7 +68,10 @@ function Hero() {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1, type: "spring", delay: 0.5 }}
           >
-            <button className="flex items-center gap-3 rounded-md bg-secondary/75 py-2 px-6 font-bold text-white transition-all duration-200 ease-in-out hover:scale-110 hover:shadow-md active:scale-100">
+            <button
+              onClick={scrollToCTA}
+              className="flex items-center gap-3 rounded-md bg-secondary/75 py-2 px-6 font-bold text-white transition-all duration-200 ease-in-out hover:scale-110 hover:shadow-md active:scale-100"
+            >
               <p>Connect with us</p>
               <span className="rounded-full border-2 py-2 px-2">
                 <FaPeopleArrows className="text-1xl text-white" />
