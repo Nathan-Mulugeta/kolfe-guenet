@@ -54,7 +54,7 @@ function Hero({ ctaRef }) {
               className="font-glock text-6xl font-bold text-white md:text-8xl"
               variants={leftVariants}
             >
-              Welcome
+              Welcome one
             </motion.h1>
             <motion.p
               className="text-xl text-white md:text-2xl"
