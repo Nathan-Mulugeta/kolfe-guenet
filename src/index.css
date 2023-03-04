@@ -86,3 +86,18 @@ body {
   height: calc(100vh + 10rem);
   clip-path: circle(94.8% at 35% 13%);
 }
+
+/* Testimonial section */
+
+#verse {
+  background: url("./assets/jpg/fellowship.jpg");
+  background-position: center;
+  background-size: cover;
+  height: 75vw;
+}
+
+@media screen and (max-width: 640px) {
+  #verse {
+    height: 40rem;
+  }
+}

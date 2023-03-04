@@ -1,5 +1,7 @@
+import CallToAction from "./CallToAction";
 import CardSection from "./CardSection";
 import Hero from "./Hero";
+import Testimonial from "./Testimonial";
 
 function Home() {
   return (
@@ -7,6 +9,8 @@ function Home() {
       <Hero />
       <CardSection />
       <div className="divider"></div>
+      <CallToAction />
+      <Testimonial />
     </>
   );
 }
