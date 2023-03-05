@@ -107,3 +107,11 @@ body {
 .footerDivider {
   height: 1px;
 }
+
+/* Card section */
+#card {
+  background-image: url("./assets/svg/Cloudy.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}

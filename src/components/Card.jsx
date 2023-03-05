@@ -15,6 +15,15 @@ const containerVariants = {
     // scale: 0,
   },
 
+  loop: {
+    y: [0, -10, 0],
+    transition: {
+      duration: 2,
+      repeat: "Infinity",
+      ease: "easeInOut",
+    },
+  },
+
   inView: {
     opacity: 1,
     // scale: 1,
@@ -31,6 +40,7 @@ function Card({ cardTitle, image, alt, cardContent }) {
       variants={containerVariants}
       // whileHover="hover"
       initial="hidden"
+      animate="loop"
       whileInView="inView"
       className="mt-6"
     >
@@ -41,7 +51,7 @@ function Card({ cardTitle, image, alt, cardContent }) {
         <figure>
           <img src={image} alt={alt} />
         </figure>
-        <div className="card-body text-primary">
+        <div className="card-body text-gray-300">
           <h2 className="card-title">{cardTitle}</h2>
           <p>{cardContent}</p>
         </div>
