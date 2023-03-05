@@ -87,6 +87,7 @@ export default function Navbar() {
 
   const handleProfileClick = () => {
     setProfileOpen(!profileOpen);
+    setNavOpen(false);
   };
 
   return (

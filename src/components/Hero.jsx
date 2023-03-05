@@ -1,30 +1,14 @@
 import { FaPeopleArrows } from "react-icons/fa";
 import { motion } from "framer-motion";
 
-const leftVariants = {
+const variants = {
   hidden: {
     opacity: 0,
-    x: "-100vw",
+    scale: 0,
   },
   visible: {
     opacity: 1,
-    x: 0,
-    transition: {
-      duration: 1,
-      type: "spring",
-      delay: 0.5,
-    },
-  },
-};
-
-const rightVariants = {
-  hidden: {
-    opacity: 0,
-    x: "100vw",
-  },
-  visible: {
-    opacity: 1,
-    x: 0,
+    scale: 1,
     transition: {
       duration: 1,
       type: "spring",
@@ -52,22 +36,18 @@ function Hero({ ctaRef }) {
           >
             <motion.h1
               className="font-glock text-6xl font-bold text-white md:text-8xl"
-              variants={leftVariants}
+              variants={variants}
             >
-              Welcome one
+              Welcome
             </motion.h1>
             <motion.p
               className="text-xl text-white md:text-2xl"
-              variants={rightVariants}
+              variants={variants}
             >
-              Getting started with Kolfe Guenet church.
+              Getting started with Kolfe Guenet church
             </motion.p>
           </motion.div>
-          <motion.div
-            initial={{ opacity: 0, scale: 0 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1, type: "spring", delay: 0.5 }}
-          >
+          <motion.div variants={variants} initial="hidden" animate="visible">
             <button
               onClick={scrollToCTA}
               className="flex items-center gap-3 rounded-md bg-secondary/75 py-2 px-6 font-bold text-white transition-all duration-200 ease-in-out hover:scale-110 hover:shadow-md active:scale-100"
