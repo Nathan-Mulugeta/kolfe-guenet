@@ -82,6 +82,13 @@ body {
   clip-path: circle(94.8% at 35% 13%);
 }
 
+@media screen and (max-width: 400px) {
+  #hero {
+    height: calc(100vh + 10rem);
+    clip-path: circle(90.8% at 4% 30%);
+  }
+}
+
 .clip {
   height: calc(100vh + 10rem);
   clip-path: circle(94.8% at 35% 13%);

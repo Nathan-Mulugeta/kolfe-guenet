@@ -7,10 +7,10 @@ module.exports = {
         glock: ["Gloock", "serif"],
       },
       colors: {
-        primary: "#A3C9D3",
+        primary: "#A49966",
         secondary: "#376570",
-        accent: "#57A4D2",
-        words: "#5C5354",
+        accent: "#C7C7A6",
+        normal: "#EAFFDA",
       },
     },
   },
@@ -19,10 +19,10 @@ module.exports = {
     themes: [
       {
         mytheme: {
-          primary: "#A3C9D3",
+          primary: "#A49966",
           secondary: "#376570",
-          accent: "#57A4D2",
-          neutral: "#3d4451",
+          accent: "#C7C7A6",
+          normal: "#EAFFDA",
           "base-100": "#ffffff",
         },
       },

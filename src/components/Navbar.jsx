@@ -94,7 +94,7 @@ export default function Navbar() {
     <>
       <nav
         className={`fixed top-0 left-0 right-0 z-50 py-4 drop-shadow-md transition duration-500 ${
-          scroll ? "bg-white shadow-md" : "bg-transparent"
+          scroll ? "bg-normal shadow-md" : "bg-transparent"
         }`}
         ref={navRef}
       >

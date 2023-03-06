@@ -10,7 +10,7 @@ function Card({ cardTitle, image, alt, cardContent }) {
         <figure>
           <img src={image} alt={alt} />
         </figure>
-        <div className="card-body text-gray-300">
+        <div className="card-body text-normal">
           <h2 className="card-title">{cardTitle}</h2>
           <p>{cardContent}</p>
         </div>
