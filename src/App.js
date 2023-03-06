@@ -1,10 +1,10 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Navbar from "./components/Navbar";
-import Home from "./components/Home";
+import Home from "./pages/Home";
 import Footer from "./components/Footer";
-import B from "./components/B";
-import C from "./components/C";
-import D from "./components/D";
+import HeavenGate from "./pages/HeavenGate";
+import C from "./pages/C";
+import D from "./pages/D";
 
 function App() {
   return (
@@ -15,7 +15,7 @@ function App() {
       <main>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/B" element={<B />} />
+          <Route path="/heaven-gate" element={<HeavenGate />} />
           <Route path="/C" element={<C />} />
           <Route path="/D" element={<D />} />
         </Routes>

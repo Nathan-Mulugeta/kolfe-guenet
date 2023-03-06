@@ -210,7 +210,7 @@ export default function Navbar() {
               Home
             </NavLink>
             <NavLink
-              to="/B"
+              to="/heaven-gate"
               className={({ isActive }) =>
                 `${
                   isActive ? "bg-secondary text-white" : "hover:bg-secondary/25"
@@ -219,7 +219,7 @@ export default function Navbar() {
                 } transition duration-200 ease-in-out`
               }
             >
-              Team
+              Heaven's Gate Project
             </NavLink>
             <NavLink
               to="/C"
@@ -314,7 +314,7 @@ export default function Navbar() {
             </NavLink>
             <NavLink
               onClick={handleNavClick}
-              to="/B"
+              to="/heaven-gate"
               className={({ isActive }) =>
                 `${
                   isActive ? "bg-secondary text-white" : ""
@@ -330,7 +330,7 @@ export default function Navbar() {
                   stiffness: 300,
                 }}
               >
-                Team
+                Heaven's Gate Project
               </motion.button>
             </NavLink>
             <NavLink

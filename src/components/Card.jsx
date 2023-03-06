@@ -1,5 +1,3 @@
-import { GiPeaceDove } from "react-icons/gi";
-
 function Card({ cardTitle, image, alt, cardContent }) {
   return (
     <div className="mt-6">

@@ -14,7 +14,7 @@ function Footer() {
       </div>
       <div>
         <div className="grid grid-flow-col gap-4">
-          <a className="cursor-pointer">
+          <a className="cursor-pointer" href="/" rel="noreferrer">
             <FaTelegramPlane
               style={{
                 width: "24",
@@ -26,6 +26,7 @@ function Footer() {
             className="cursor-pointer"
             href="https://www.youtube.com/@kgc223"
             target="_blank"
+            rel="noreferrer"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -41,6 +42,7 @@ function Footer() {
             className="cursor-pointer"
             href="https://www.facebook.com/kolfe.g.church?mibextid=ZbWKwL"
             target="_blank"
+            rel="noreferrer"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
