@@ -1,11 +1,15 @@
-import { FaTelegramPlane } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
+import { FaTelegramPlane } from "react-icons/fa";
 
 function Footer() {
   const footerYear = new Date().getFullYear();
-  const handleNavLinkClick = () => {
-    window.scrollTo(0, 0);
-  };
+
+  function handleHomeClick() {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }
 
   return (
     <footer className="footer footer-center bg-gray-800 p-10 text-normal">
@@ -16,7 +20,7 @@ function Footer() {
           smooth={true}
           duration={500}
           className="link-hover link"
-          onClick={handleNavLinkClick}
+          onClick={handleHomeClick}
         >
           Home
         </NavLink>
