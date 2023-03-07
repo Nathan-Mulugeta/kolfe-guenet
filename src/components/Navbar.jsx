@@ -3,14 +3,17 @@ import { NavLink, Link } from "react-router-dom";
 // import churchLogo from "../assets/jpg/logo.png";
 // import churchLogoSvg from "../assets/svg/churchLogoSvg.svg";
 import { RxAvatar } from "react-icons/rx";
-import { motion } from "framer-motion";
+import { BsChevronDown } from "react-icons/bs";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function Navbar() {
   const [navOpen, setNavOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
   const profileRef = useRef(null);
   const navRef = useRef(null);
+  const dropRef = useRef(null);
   const [scroll, setScroll] = useState(false);
+  const [dropDownOpen, setDropDownOpen] = useState(false);
 
   const svgVariant = {
     hidden: {
@@ -55,6 +58,13 @@ export default function Navbar() {
   }, []);
 
   useEffect(() => {
+    document.addEventListener("click", handleDropDownClickOutside);
+    return () => {
+      document.removeEventListener("click", handleDropDownClickOutside);
+    };
+  }, []);
+
+  useEffect(() => {
     window.addEventListener("scroll", handleScroll);
     return () => {
       window.removeEventListener("scroll", handleScroll);
@@ -66,6 +76,12 @@ export default function Navbar() {
       setScroll(true);
     } else {
       setScroll(false);
+    }
+  };
+
+  const handleDropDownClickOutside = (event) => {
+    if (dropRef.current && !dropRef.current.contains(event.target)) {
+      setDropDownOpen(false);
     }
   };
 
@@ -100,6 +116,10 @@ export default function Navbar() {
       behavior: "smooth",
     });
   }
+
+  const handleDropDownToggle = () => {
+    setDropDownOpen(!dropDownOpen);
+  };
 
   return (
     <>
@@ -236,20 +256,89 @@ export default function Navbar() {
             >
               Heaven's Gate Project
             </NavLink>
-            <NavLink
-              onClick={handleTopScroll}
-              to="/C"
-              className={({ isActive }) =>
-                `${
-                  isActive ? "bg-secondary text-white" : "hover:bg-secondary/25"
-                } ${
-                  scroll ? "text-secondary" : "text-white"
-                } rounded-md px-3 py-1  transition duration-200 ease-in-out`
-              }
+
+            {/* Drop Down */}
+            <div
+              ref={dropRef}
+              className={`${
+                scroll ? "text-secondary" : "text-white"
+              } relative cursor-pointer rounded-md  px-3 py-1 transition duration-200 ease-in-out hover:bg-secondary/25`}
             >
-              Calendar
-            </NavLink>
-            <NavLink
+              <div
+                onClick={handleDropDownToggle}
+                className=" flex items-center justify-between space-x-4"
+              >
+                <p>About</p>
+                <BsChevronDown
+                  className={`text-sm ${
+                    scroll ? "text-secondary" : "text-white"
+                  }`}
+                />
+              </div>
+              <div
+                className={`absolute left-2 mt-2 ${
+                  dropDownOpen ? "block" : "hidden"
+                }`}
+              >
+                <div className="flex w-36 flex-col divide-y divide-gray-100 rounded-md bg-white text-sm font-semibold text-secondary shadow-lg">
+                  <NavLink
+                    to="/belief"
+                    className={({ isActive }) =>
+                      `${
+                        isActive
+                          ? "bg-secondary text-white"
+                          : "hover:bg-secondary/25"
+                      } px-4 py-2 ${
+                        scroll ? "text-secondary" : ""
+                      } transition duration-100 ease-in-out`
+                    }
+                  >
+                    Our Belief
+                  </NavLink>
+                  <NavLink
+                    to="/staff"
+                    className={({ isActive }) =>
+                      `${
+                        isActive
+                          ? "bg-secondary text-white"
+                          : "hover:bg-secondary/25"
+                      } px-4 py-2 ${
+                        scroll ? "text-secondary" : ""
+                      } transition duration-100 ease-in-out`
+                    }
+                  >
+                    Staff
+                  </NavLink>
+                  <NavLink
+                    to="contact-us"
+                    className={({ isActive }) =>
+                      `${
+                        isActive
+                          ? "bg-secondary text-white"
+                          : "hover:bg-secondary/25"
+                      } px-4 py-2 ${
+                        scroll ? "text-secondary" : ""
+                      } transition duration-100 ease-in-out`
+                    }
+                  >
+                    Contact Us
+                  </NavLink>
+                </div>
+              </div>
+              <NavLink
+                onClick={handleTopScroll}
+                to="/C"
+                className={({ isActive }) =>
+                  `${
+                    isActive
+                      ? "bg-secondary text-white"
+                      : "hover:bg-secondary/25"
+                  } `
+                }
+              ></NavLink>
+            </div>
+
+            {/* <NavLink
               onClick={handleTopScroll}
               to="/D"
               className={({ isActive }) =>
@@ -261,39 +350,8 @@ export default function Navbar() {
               }
             >
               Projects
-            </NavLink>
+            </NavLink> */}
           </ul>
-
-          {/* Avatar */}
-          <div
-            onClick={handleProfileClick}
-            ref={profileRef}
-            className="relative"
-          >
-            <button>
-              <RxAvatar
-                className={`h-8 w-8 ${
-                  scroll ? "text-secondary" : "text-white"
-                } transition-all duration-500 ease-in-out `}
-              />
-            </button>
-            <div className={`${profileOpen ? "" : "hidden"}`}>
-              <ul className="absolute right-1 flex w-36  flex-col gap-2 rounded-md bg-white px-6 py-4 font-medium text-secondary transition-all duration-1000 ease-in-out">
-                <Link
-                  className="hover:text-secondary/75"
-                  onClick={handleProfileClick}
-                >
-                  <li>Your Profile</li>
-                </Link>
-                <Link
-                  className="hover:text-secondary/75"
-                  onClick={handleProfileClick}
-                >
-                  <li>Sign Out</li>
-                </Link>
-              </ul>
-            </div>
-          </div>
         </div>
 
         {/* Menu items for mobile */}
