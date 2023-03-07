@@ -83,12 +83,23 @@ export default function Navbar() {
 
   const handleNavClick = () => {
     setNavOpen(!navOpen);
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
   };
 
   const handleProfileClick = () => {
     setProfileOpen(!profileOpen);
     setNavOpen(false);
   };
+
+  function handleTopScroll() {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }
 
   return (
     <>
@@ -112,7 +123,9 @@ export default function Navbar() {
             className={`${scroll ? "" : "rounded-md bg-secondary/50"} px-1`}
           >
             <button
-              onClick={handleNavClick}
+              onClick={() => {
+                setNavOpen(!navOpen);
+              }}
               id="menu-btn"
               className={`${
                 navOpen ? "open" : ""
@@ -135,7 +148,7 @@ export default function Navbar() {
           </motion.div>
 
           {/* Church Logo */}
-          <NavLink to="/">
+          <NavLink to="/" onClick={handleTopScroll}>
             <motion.svg
               className={`w-auto rounded-md`}
               variants={svgVariant}
@@ -199,6 +212,7 @@ export default function Navbar() {
           <ul className="hidden grow items-center justify-start gap-8 px-8 md:flex">
             <NavLink
               to="/"
+              onClick={handleTopScroll}
               className={({ isActive }) =>
                 `${
                   isActive ? "bg-secondary text-white" : "hover:bg-secondary/25"
@@ -210,6 +224,7 @@ export default function Navbar() {
               Home
             </NavLink>
             <NavLink
+              onClick={handleTopScroll}
               to="/heaven-gate"
               className={({ isActive }) =>
                 `${
@@ -222,6 +237,7 @@ export default function Navbar() {
               Heaven's Gate Project
             </NavLink>
             <NavLink
+              onClick={handleTopScroll}
               to="/C"
               className={({ isActive }) =>
                 `${
@@ -234,6 +250,7 @@ export default function Navbar() {
               Calendar
             </NavLink>
             <NavLink
+              onClick={handleTopScroll}
               to="/D"
               className={({ isActive }) =>
                 `${

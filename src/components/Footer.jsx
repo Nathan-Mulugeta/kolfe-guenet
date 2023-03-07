@@ -4,7 +4,7 @@ import { FaTelegramPlane } from "react-icons/fa";
 function Footer() {
   const footerYear = new Date().getFullYear();
 
-  function handleHomeClick() {
+  function handleTopScroll() {
     window.scrollTo({
       top: 0,
       behavior: "smooth",
@@ -20,15 +20,38 @@ function Footer() {
           smooth={true}
           duration={500}
           className="link-hover link"
-          onClick={handleHomeClick}
+          onClick={handleTopScroll}
         >
           Home
         </NavLink>
-        <NavLink to="heaven-gate" className="link-hover link">
+        <NavLink
+          to="heaven-gate"
+          spy={true}
+          smooth={true}
+          duration={500}
+          onClick={handleTopScroll}
+          className="link-hover link"
+        >
           Heaven's Gate
         </NavLink>
-        <NavLink className="link-hover link">Jobs</NavLink>
-        <NavLink className="link-hover link">Press kit</NavLink>
+        <NavLink
+          spy={true}
+          smooth={true}
+          duration={500}
+          onClick={handleTopScroll}
+          className="link-hover link"
+        >
+          Jobs
+        </NavLink>
+        <NavLink
+          spy={true}
+          smooth={true}
+          duration={500}
+          onClick={handleTopScroll}
+          className="link-hover link"
+        >
+          Press kit
+        </NavLink>
       </div>
       <div>
         <div className="grid grid-flow-col gap-4">
