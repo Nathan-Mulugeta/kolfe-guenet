@@ -1,14 +1,28 @@
-import { NavLink } from "react-router-dom";
 import { FaTelegramPlane } from "react-icons/fa";
+import { NavLink } from "react-router-dom";
 
 function Footer() {
   const footerYear = new Date().getFullYear();
+  const handleNavLinkClick = () => {
+    window.scrollTo(0, 0);
+  };
 
   return (
     <footer className="footer footer-center bg-gray-800 p-10 text-normal">
       <div className="grid grid-flow-col gap-4">
-        <NavLink className="link-hover link">About us</NavLink>
-        <NavLink className="link-hover link">Contact</NavLink>
+        <NavLink
+          to="/"
+          spy={true}
+          smooth={true}
+          duration={500}
+          className="link-hover link"
+          onClick={handleNavLinkClick}
+        >
+          Home
+        </NavLink>
+        <NavLink to="heaven-gate" className="link-hover link">
+          Heaven's Gate
+        </NavLink>
         <NavLink className="link-hover link">Jobs</NavLink>
         <NavLink className="link-hover link">Press kit</NavLink>
       </div>

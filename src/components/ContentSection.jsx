@@ -160,9 +160,9 @@ export default function Example() {
               </div>
             </div>
 
-            <div className="mt-6 ml-6 justify-self-end rounded-xl lg:sticky lg:top-4 lg:col-start-1 lg:row-span-2 lg:row-start-2 lg:overflow-hidden ">
+            <div className="col-end-2 mt-6 ml-6 justify-self-end rounded-xl lg:sticky lg:top-4 lg:col-start-1 lg:row-span-2 lg:row-start-2 lg:overflow-hidden ">
               <img
-                className="w-[28rem] max-w-none translate-x-1/3 bg-gray-900 shadow-xl ring-1 ring-gray-400/10 sm:w-[57rem]"
+                className="w-[28rem] max-w-none bg-gray-900 shadow-xl ring-1 ring-gray-400/10 sm:w-[57rem] md:translate-x-1/3"
                 src={Img1}
                 alt="church design"
               />
