@@ -1,15 +1,12 @@
 import { useState, useRef, useEffect } from "react";
-import { NavLink, Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 // import churchLogo from "../assets/jpg/logo.png";
 // import churchLogoSvg from "../assets/svg/churchLogoSvg.svg";
-import { RxAvatar } from "react-icons/rx";
 import { BsChevronDown } from "react-icons/bs";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 
 export default function Navbar() {
   const [navOpen, setNavOpen] = useState(false);
-  const [profileOpen, setProfileOpen] = useState(false);
-  const profileRef = useRef(null);
   const navRef = useRef(null);
   const dropRef = useRef(null);
   const [scroll, setScroll] = useState(false);
@@ -42,13 +39,6 @@ export default function Navbar() {
       },
     },
   };
-
-  useEffect(() => {
-    document.addEventListener("click", handleProfileClickOutside);
-    return () => {
-      document.removeEventListener("click", handleProfileClickOutside);
-    };
-  }, []);
 
   useEffect(() => {
     document.addEventListener("click", handleNavClickOutside);
@@ -85,12 +75,6 @@ export default function Navbar() {
     }
   };
 
-  const handleProfileClickOutside = (event) => {
-    if (profileRef.current && !profileRef.current.contains(event.target)) {
-      setProfileOpen(false);
-    }
-  };
-
   const handleNavClickOutside = (event) => {
     if (navRef.current && !navRef.current.contains(event.target)) {
       setNavOpen(false);
@@ -103,11 +87,6 @@ export default function Navbar() {
       top: 0,
       behavior: "smooth",
     });
-  };
-
-  const handleProfileClick = () => {
-    setProfileOpen(!profileOpen);
-    setNavOpen(false);
   };
 
   function handleTopScroll() {
@@ -365,91 +344,85 @@ export default function Navbar() {
           ref={navRef}
         >
           {/* Mobile menu items */}
-          <ul className="absolute left-6 right-6 mt-10 flex flex-col items-center justify-center gap-4 rounded-3xl bg-white py-8 font-bold drop-shadow-md sm:w-auto">
+          <ul className="absolute left-6 right-6 mt-10 flex flex-col items-start justify-center gap-4 rounded-3xl bg-white py-8 font-bold drop-shadow-md sm:w-auto">
             <NavLink
               onClick={handleNavClick}
               to="/"
               className={({ isActive }) =>
                 `${
-                  isActive ? "bg-secondary text-white" : ""
-                } rounded-md px-3 py-1 text-secondary transition duration-200 ease-in-out`
+                  isActive ? "bg-secondary text-white" : "hover:bg-secondary/25"
+                } w-full px-3 py-1 pl-10 text-secondary transition duration-200 ease-in-out`
               }
             >
-              <motion.button
-                whileHover={{
-                  scale: 1.3,
-                }}
-                transition={{
-                  type: "spring",
-                  stiffness: 300,
-                }}
-              >
-                Home
-              </motion.button>
+              Home
             </NavLink>
             <NavLink
               onClick={handleNavClick}
               to="/heaven-gate"
               className={({ isActive }) =>
                 `${
-                  isActive ? "bg-secondary text-white" : ""
-                } rounded-md px-3 py-1 text-secondary transition duration-200 ease-in-out`
+                  isActive ? "bg-secondary text-white" : "hover:bg-secondary/25"
+                } w-full px-3 py-1 pl-10 text-secondary transition duration-200 ease-in-out`
               }
             >
-              <motion.button
-                whileHover={{
-                  scale: 1.3,
-                }}
-                transition={{
-                  type: "spring",
-                  stiffness: 300,
-                }}
-              >
-                Heaven's Gate Project
-              </motion.button>
+              Heaven's Gate Project
             </NavLink>
-            <NavLink
-              onClick={handleNavClick}
-              to="/C"
-              className={({ isActive }) =>
-                `${
-                  isActive ? "bg-secondary text-white" : ""
-                } rounded-md px-3 py-1 text-secondary transition duration-200 ease-in-out`
-              }
+            <div
+              ref={dropRef}
+              className="w-full cursor-pointer px-3 py-1 pl-10 text-secondary transition duration-200 ease-in-out hover:bg-secondary/25"
             >
-              <motion.button
-                whileHover={{
-                  scale: 1.3,
-                }}
-                transition={{
-                  type: "spring",
-                  stiffness: 300,
-                }}
+              <div
+                onClick={handleDropDownToggle}
+                className=" flex items-center space-x-4"
               >
-                Calendar
-              </motion.button>
-            </NavLink>
-            <NavLink
-              onClick={handleNavClick}
-              to="/D"
-              className={({ isActive }) =>
-                `${
-                  isActive ? "bg-secondary text-white" : ""
-                } rounded-md px-3 py-1 text-secondary transition duration-200 ease-in-out`
-              }
+                <p>About</p>
+                <BsChevronDown className="text-sm text-secondary" />
+              </div>
+            </div>
+            <div
+              className={`${
+                dropDownOpen ? "block" : "hidden"
+              } -mt-4 w-full pl-10`}
             >
-              <motion.button
-                whileHover={{
-                  scale: 1.3,
-                }}
-                transition={{
-                  type: "spring",
-                  stiffness: 300,
-                }}
-              >
-                Price
-              </motion.button>
-            </NavLink>
+              <div className="flex flex-col divide-y divide-gray-100 rounded-l-md bg-gray-200 text-sm font-semibold text-secondary">
+                <NavLink
+                  to="/belief"
+                  className={({ isActive }) =>
+                    `${
+                      isActive
+                        ? "bg-secondary text-white"
+                        : "hover:bg-secondary/25"
+                    } rounded-l-lg px-4 py-2 transition duration-100 ease-in-out`
+                  }
+                >
+                  Our Belief
+                </NavLink>
+                <NavLink
+                  to="/staff"
+                  className={({ isActive }) =>
+                    `${
+                      isActive
+                        ? "bg-secondary text-white"
+                        : "hover:bg-secondary/25"
+                    } rounded-l-lg px-4 py-2 transition duration-100 ease-in-out`
+                  }
+                >
+                  Staff
+                </NavLink>
+                <NavLink
+                  to="contact-us"
+                  className={({ isActive }) =>
+                    `${
+                      isActive
+                        ? "bg-secondary text-white"
+                        : "hover:bg-secondary/25"
+                    } rounded-l-lg px-4 py-2 transition duration-100 ease-in-out`
+                  }
+                >
+                  Contact Us
+                </NavLink>
+              </div>
+            </div>
           </ul>
         </div>
       </nav>
