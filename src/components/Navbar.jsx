@@ -261,7 +261,7 @@ export default function Navbar() {
                   dropDownOpen ? "block" : "hidden"
                 }`}
               >
-                <div className="flex w-36 flex-col divide-y divide-gray-100 rounded-md bg-white text-sm font-semibold text-secondary shadow-lg">
+                <div className="flex w-36 flex-col divide-y divide-gray-100 overflow-hidden rounded-b-md bg-white text-sm font-semibold text-secondary shadow-lg">
                   <NavLink
                     onClick={handleTopScroll}
                     to="/our-belief"
