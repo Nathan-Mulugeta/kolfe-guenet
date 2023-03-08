@@ -50,7 +50,7 @@ function Staff() {
       </section>
 
       <section>
-        <div>
+        <div className="container mx-auto">
           <div className="bg-white py-24 sm:py-32">
             <div className="mx-auto grid max-w-7xl gap-y-20 gap-x-8 px-6 lg:px-8 xl:grid-cols-3">
               <div className="max-w-2xl">

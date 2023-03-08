@@ -34,7 +34,7 @@ function OurBelief() {
       </section>
 
       <article id="content">
-        <div className="m-4 grid gap-4 md:grid-cols-2">
+        <div className="container m-4 mx-auto grid gap-4 md:grid-cols-2">
           <div className="space-y-4 p-4">
             <h1 className="text-3xl font-bold">About God</h1>
             <p>

@@ -95,6 +95,7 @@ export default function Navbar() {
       behavior: "smooth",
     });
 
+    setNavOpen(!navOpen);
     setDropDownOpen(false);
   }
 
@@ -361,63 +362,40 @@ export default function Navbar() {
             >
               Heaven's Gate Project
             </NavLink>
-            <div className="w-full cursor-pointer px-3 py-1 pl-10 text-secondary transition duration-200 ease-in-out hover:bg-secondary/25">
-              <div
-                onClick={handleDropDownToggle}
-                className=" flex items-center space-x-4"
-              >
-                <p>About</p>
-                <BsChevronDown className="text-sm text-secondary" />
-              </div>
-            </div>
-            <div
-              className={`${
-                // dropDownOpen ? "block" : "hidden"
-                "block"
-              } -mt-4 w-full pl-10`}
+
+            <NavLink
+              onClick={handleTopScroll}
+              to="/our-belief"
+              className={({ isActive }) =>
+                `${
+                  isActive ? "bg-secondary text-white" : "hover:bg-secondary/25"
+                } w-full px-3 py-1 pl-10 text-secondary transition duration-200 ease-in-out`
+              }
             >
-              <div className="flex flex-col divide-y divide-gray-100 rounded-l-md bg-gray-200 text-sm font-semibold text-secondary">
-                <NavLink
-                  onClick={handleTopScroll}
-                  to="/our-belief"
-                  className={({ isActive }) =>
-                    `${
-                      isActive
-                        ? "bg-secondary text-white"
-                        : "hover:bg-secondary/25"
-                    } rounded-l-lg px-4 py-2 transition duration-100 ease-in-out`
-                  }
-                >
-                  Our Belief
-                </NavLink>
-                <NavLink
-                  onClick={handleTopScroll}
-                  to="/staff"
-                  className={({ isActive }) =>
-                    `${
-                      isActive
-                        ? "bg-secondary text-white"
-                        : "hover:bg-secondary/25"
-                    } rounded-l-lg px-4 py-2 transition duration-100 ease-in-out`
-                  }
-                >
-                  Staff
-                </NavLink>
-                <NavLink
-                  onClick={handleTopScroll}
-                  to="contact-us"
-                  className={({ isActive }) =>
-                    `${
-                      isActive
-                        ? "bg-secondary text-white"
-                        : "hover:bg-secondary/25"
-                    } rounded-l-lg px-4 py-2 transition duration-100 ease-in-out`
-                  }
-                >
-                  Contact Us
-                </NavLink>
-              </div>
-            </div>
+              Our Belief
+            </NavLink>
+            <NavLink
+              onClick={handleTopScroll}
+              to="/staff"
+              className={({ isActive }) =>
+                `${
+                  isActive ? "bg-secondary text-white" : "hover:bg-secondary/25"
+                } w-full px-3 py-1 pl-10 text-secondary transition duration-200 ease-in-out`
+              }
+            >
+              Staff
+            </NavLink>
+            <NavLink
+              onClick={handleTopScroll}
+              to="contact-us"
+              className={({ isActive }) =>
+                `${
+                  isActive ? "bg-secondary text-white" : "hover:bg-secondary/25"
+                } w-full px-3 py-1 pl-10 text-secondary transition duration-200 ease-in-out`
+              }
+            >
+              Contact Us
+            </NavLink>
           </ul>
         </div>
       </nav>

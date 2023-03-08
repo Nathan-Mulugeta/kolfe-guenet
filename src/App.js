@@ -1,4 +1,6 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import Footer from "./components/Footer";
@@ -9,21 +11,24 @@ import Staff from "./Staff";
 
 function App() {
   return (
-    <Router>
-      <header>
-        <Navbar />
-      </header>
-      <main>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/heaven-gate" element={<HeavenGate />} />
-          <Route path="/our-belief" element={<OurBelief />} />
-          <Route path="/staff" element={<Staff />} />
-          <Route path="/contact-us" element={<ContactUs />} />
-        </Routes>
-      </main>
-      <Footer />
-    </Router>
+    <>
+      <Router>
+        <header>
+          <Navbar />
+        </header>
+        <main>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/heaven-gate" element={<HeavenGate />} />
+            <Route path="/our-belief" element={<OurBelief />} />
+            <Route path="/staff" element={<Staff />} />
+            <Route path="/contact-us" element={<ContactUs />} />
+          </Routes>
+        </main>
+        <Footer />
+      </Router>
+      <ToastContainer />
+    </>
   );
 }
 

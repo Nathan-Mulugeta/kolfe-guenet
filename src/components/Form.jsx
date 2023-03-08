@@ -1,7 +1,62 @@
+import { useState } from "react";
+import { toast } from "react-toastify";
+
 function Form() {
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    phone: "",
+    email: "",
+    interest: "",
+    message: "",
+  });
+
+  const { firstName, lastName, phone, email, interest, message } = formData;
+
+  const onMutate = (e) => {
+    if (e.target.value) {
+      setFormData({
+        ...formData,
+        [e.target.id]: e.target.value,
+      });
+    }
+  };
+
   const onSubmit = (e) => {
     e.preventDefault();
+
+    if (firstName === "") {
+      toast.error("First Name is required");
+      return;
+    }
+
+    if (lastName === "") {
+      toast.error("Last Name is required");
+      return;
+    }
+
+    if (phone === "") {
+      toast.error("Phone number is required");
+      return;
+    }
+
+    // Regular expressions to validate phone number and email
+    const phoneRegex = /^[0-9]{10}$/;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!phoneRegex.test(phone)) {
+      toast.error("Please enter a valid phone number");
+      return;
+    }
+
+    if (!emailRegex.test(email)) {
+      toast.error("Please enter a valid email address");
+      return;
+    }
   };
+
+  const isDisabled = firstName === "" || lastName === "" || phone === "";
+
   return (
     <form>
       <div className="-mb-32 overflow-hidden shadow sm:rounded-md lg:-mb-40">
@@ -9,15 +64,18 @@ function Form() {
           <div className="grid grid-cols-6 gap-6">
             <div className="col-span-6 sm:col-span-3">
               <label
-                htmlFor="first-name"
+                htmlFor="firstName"
                 className="block text-sm font-medium leading-6 text-gray-900"
               >
                 First name
               </label>
               <input
+                required
+                onChange={onMutate}
+                placeholder="eg. John"
                 type="text"
-                name="first-name"
-                id="first-name"
+                name="firstName"
+                id="firstName"
                 autoComplete="given-name"
                 className="mt-2 block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-secondary sm:text-sm sm:leading-6"
               />
@@ -25,15 +83,18 @@ function Form() {
 
             <div className="col-span-6 sm:col-span-3">
               <label
-                htmlFor="last-name"
+                htmlFor="lastName"
                 className="block text-sm font-medium leading-6 text-gray-900"
               >
                 Last name
               </label>
               <input
+                required
+                onChange={onMutate}
+                placeholder="eg. Doe"
                 type="text"
-                name="last-name"
-                id="last-name"
+                name="lastName"
+                id="lastName"
                 autoComplete="family-name"
                 className="mt-2 block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-secondary sm:text-sm sm:leading-6"
               />
@@ -41,17 +102,19 @@ function Form() {
 
             <div className="col-span-6 sm:col-span-6 lg:col-span-2">
               <label
-                htmlFor="phone-number"
+                htmlFor="phone"
                 className="block text-sm font-medium leading-6 text-gray-900"
               >
                 Phone
               </label>
               <input
+                required
+                onChange={onMutate}
                 type="tel"
-                placeholder="+251 (XXX)-XXX-XXXX"
+                placeholder="eg. +251 (XXX)-XXX-XXXX"
                 // pattern="+251-{###}-{###}-{####}"
-                name="phone-number"
-                id="phone-number"
+                name="phone"
+                id="phone"
                 autoComplete="phone-number"
                 maxLength={10}
                 className="mt-2 block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-secondary sm:text-sm sm:leading-6"
@@ -60,15 +123,17 @@ function Form() {
 
             <div className="col-span-6 sm:col-span-4">
               <label
-                htmlFor="email-address"
+                htmlFor="email"
                 className="block text-sm font-medium leading-6 text-gray-900"
               >
                 Email address
               </label>
               <input
+                onChange={onMutate}
+                placeholder="eg. johndoe@gmail.com"
                 type="text"
-                name="email-address"
-                id="email-address"
+                name="email"
+                id="email"
                 autoComplete="email"
                 className="mt-2 block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-secondary sm:text-sm sm:leading-6"
               />
@@ -82,11 +147,12 @@ function Form() {
                 Interest
               </label>
               <select
+                onChange={onMutate}
                 id="interest"
                 name="interest"
                 className="mt-2 block w-full rounded-md border-0 bg-white py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-secondary sm:text-sm sm:leading-6"
               >
-                <option>Attending a service</option>
+                <option>Be a member</option>
                 <option>Joining a ministry or a group</option>
                 <option>Attending an event</option>
               </select>
@@ -94,12 +160,13 @@ function Form() {
 
             <div className="col-span-6">
               <label
-                htmlFor="street-address"
+                htmlFor="message"
                 className="block text-sm font-medium leading-6 text-gray-900"
               >
                 Your message
               </label>
               <textarea
+                onChange={onMutate}
                 placeholder="How can we help you?"
                 type="text"
                 name="message"
@@ -111,11 +178,12 @@ function Form() {
         </div>
         <div className="bg-gray-50 px-4 py-6 text-right sm:px-6">
           <button
+            disabled={isDisabled}
             onClick={onSubmit}
             type="submit"
-            className="inline-flex justify-center rounded-md bg-secondary py-2 px-6 text-sm font-semibold text-white shadow-sm transition-transform duration-150 ease-in-out hover:scale-105 hover:bg-secondary/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary active:scale-95"
+            className="inline-flex justify-center rounded-md bg-secondary py-2 px-6 text-sm font-semibold text-white shadow-sm transition-transform duration-150 ease-in-out hover:scale-105 hover:bg-secondary/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary active:scale-95 disabled:bg-gray-400 disabled:hover:scale-100 disabled:active:scale-100"
           >
-            Save
+            Submit
           </button>
         </div>
       </div>

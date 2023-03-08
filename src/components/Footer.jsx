@@ -14,43 +14,36 @@ function Footer() {
   return (
     <footer className="footer footer-center bg-gray-800 p-10 text-normal">
       <div className="grid grid-flow-col gap-4">
-        <NavLink
-          to="/"
-          spy={true}
-          smooth={true}
-          duration={500}
-          className="link-hover link"
-          onClick={handleTopScroll}
-        >
+        <NavLink to="/" className="link-hover link" onClick={handleTopScroll}>
           Home
         </NavLink>
         <NavLink
           to="heaven-gate"
-          spy={true}
-          smooth={true}
-          duration={500}
           onClick={handleTopScroll}
           className="link-hover link"
         >
           Heaven's Gate
         </NavLink>
         <NavLink
-          spy={true}
-          smooth={true}
-          duration={500}
+          to="/our-belief"
           onClick={handleTopScroll}
           className="link-hover link"
         >
-          Jobs
+          Our Belief
         </NavLink>
         <NavLink
-          spy={true}
-          smooth={true}
-          duration={500}
+          to="/staff"
           onClick={handleTopScroll}
           className="link-hover link"
         >
-          Press kit
+          Staff
+        </NavLink>
+        <NavLink
+          to="/contact-us"
+          onClick={handleTopScroll}
+          className="link-hover link"
+        >
+          Contact Us
         </NavLink>
       </div>
       <div>
