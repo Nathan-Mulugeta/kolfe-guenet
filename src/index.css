@@ -76,22 +76,9 @@ body {
 #hero {
   background: url("./assets/jpg/heroBackground.jpg");
   background-repeat: no-repeat;
-  height: calc(100vh + 10rem);
+  height: 100vh;
   background-size: cover;
   background-position: bottom center;
-  clip-path: circle(94.8% at 35% 13%);
-}
-
-@media screen and (max-width: 400px) {
-  #hero {
-    height: calc(100vh + 10rem);
-    clip-path: circle(90.8% at 4% 30%);
-  }
-}
-
-.clip {
-  height: calc(100vh + 10rem);
-  clip-path: circle(94.8% at 35% 13%);
 }
 
 /* Testimonial section */
@@ -116,12 +103,12 @@ body {
 }
 
 /* Card section */
-#card {
+/* #card {
   background-image: url("./assets/svg/Cloudy.svg");
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
-}
+} */
 
 /* Heaven Gate Hero */
 

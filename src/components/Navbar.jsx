@@ -40,6 +40,17 @@ export default function Navbar() {
     },
   };
 
+  const handleScrollForNav = () => {
+    setNavOpen(false);
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScrollForNav);
+    return () => {
+      window.removeEventListener("scroll", handleScrollForNav);
+    };
+  }, []);
+
   useEffect(() => {
     document.addEventListener("click", handleNavClickOutside);
     return () => {

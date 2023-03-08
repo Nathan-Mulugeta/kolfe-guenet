@@ -1,5 +1,6 @@
 import Card from "./Card";
 import { motion } from "framer-motion";
+import CardSectionSvg from "../assets/svg/CardSectionSvg";
 
 const container = {
   initial: {
@@ -26,7 +27,10 @@ const item = {
 
 function CardSection() {
   return (
-    <section id="card">
+    <section id="card" className="relative">
+      <div className="absolute inset-0 -z-10 overflow-hidden">
+        <CardSectionSvg />
+      </div>
       <motion.div
         variants={container}
         initial="initial"
