@@ -367,10 +367,7 @@ export default function Navbar() {
             >
               Heaven's Gate Project
             </NavLink>
-            <div
-              ref={dropRef}
-              className="w-full cursor-pointer px-3 py-1 pl-10 text-secondary transition duration-200 ease-in-out hover:bg-secondary/25"
-            >
+            <div className="w-full cursor-pointer px-3 py-1 pl-10 text-secondary transition duration-200 ease-in-out hover:bg-secondary/25">
               <div
                 onClick={handleDropDownToggle}
                 className=" flex items-center space-x-4"
@@ -381,7 +378,8 @@ export default function Navbar() {
             </div>
             <div
               className={`${
-                dropDownOpen ? "block" : "hidden"
+                // dropDownOpen ? "block" : "hidden"
+                "block"
               } -mt-4 w-full pl-10`}
             >
               <div className="flex flex-col divide-y divide-gray-100 rounded-l-md bg-gray-200 text-sm font-semibold text-secondary">
