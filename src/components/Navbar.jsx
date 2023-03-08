@@ -94,6 +94,8 @@ export default function Navbar() {
       top: 0,
       behavior: "smooth",
     });
+
+    setDropDownOpen(false);
   }
 
   const handleDropDownToggle = () => {
@@ -261,7 +263,8 @@ export default function Navbar() {
               >
                 <div className="flex w-36 flex-col divide-y divide-gray-100 rounded-md bg-white text-sm font-semibold text-secondary shadow-lg">
                   <NavLink
-                    to="/belief"
+                    onClick={handleTopScroll}
+                    to="/our-belief"
                     className={({ isActive }) =>
                       `${
                         isActive
@@ -275,6 +278,7 @@ export default function Navbar() {
                     Our Belief
                   </NavLink>
                   <NavLink
+                    onClick={handleTopScroll}
                     to="/staff"
                     className={({ isActive }) =>
                       `${
@@ -289,6 +293,7 @@ export default function Navbar() {
                     Staff
                   </NavLink>
                   <NavLink
+                    onClick={handleTopScroll}
                     to="contact-us"
                     className={({ isActive }) =>
                       `${
@@ -304,17 +309,6 @@ export default function Navbar() {
                   </NavLink>
                 </div>
               </div>
-              <NavLink
-                onClick={handleTopScroll}
-                to="/C"
-                className={({ isActive }) =>
-                  `${
-                    isActive
-                      ? "bg-secondary text-white"
-                      : "hover:bg-secondary/25"
-                  } `
-                }
-              ></NavLink>
             </div>
 
             {/* <NavLink
@@ -384,7 +378,8 @@ export default function Navbar() {
             >
               <div className="flex flex-col divide-y divide-gray-100 rounded-l-md bg-gray-200 text-sm font-semibold text-secondary">
                 <NavLink
-                  to="/belief"
+                  onClick={handleTopScroll}
+                  to="/our-belief"
                   className={({ isActive }) =>
                     `${
                       isActive
@@ -396,6 +391,7 @@ export default function Navbar() {
                   Our Belief
                 </NavLink>
                 <NavLink
+                  onClick={handleTopScroll}
                   to="/staff"
                   className={({ isActive }) =>
                     `${
@@ -408,6 +404,7 @@ export default function Navbar() {
                   Staff
                 </NavLink>
                 <NavLink
+                  onClick={handleTopScroll}
                   to="contact-us"
                   className={({ isActive }) =>
                     `${

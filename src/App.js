@@ -3,8 +3,9 @@ import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import Footer from "./components/Footer";
 import HeavenGate from "./pages/HeavenGate";
-import C from "./pages/C";
-import D from "./pages/D";
+import OurBelief from "./pages/OurBelief";
+import ContactUs from "./ContactUs";
+import Staff from "./Staff";
 
 function App() {
   return (
@@ -16,8 +17,9 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/heaven-gate" element={<HeavenGate />} />
-          <Route path="/C" element={<C />} />
-          <Route path="/D" element={<D />} />
+          <Route path="/our-belief" element={<OurBelief />} />
+          <Route path="/staff" element={<Staff />} />
+          <Route path="/contact-us" element={<ContactUs />} />
         </Routes>
       </main>
       <Footer />
