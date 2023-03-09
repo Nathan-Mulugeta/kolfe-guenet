@@ -119,3 +119,8 @@ body {
   background-position: center;
   height: 75vh;
 }
+
+/* Handle Modal scroll */
+.modal-open {
+  overflow: hidden;
+}

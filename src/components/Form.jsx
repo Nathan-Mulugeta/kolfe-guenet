@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
+import { createPortal } from "react-dom";
+import Modal from "./Modal";
 
 function Form() {
   const [formData, setFormData] = useState({
@@ -10,9 +12,16 @@ function Form() {
     interest: "",
     message: "",
   });
+  const [showModal, setShowModal] = useState(false);
 
   const { firstName, lastName, phone, email, interest, message } = formData;
 
+  // Close modal
+  const closeModal = () => {
+    setShowModal(false);
+  };
+
+  // Handle input data mutation
   const onMutate = (e) => {
     if (e.target.value) {
       setFormData({
@@ -53,6 +62,8 @@ function Form() {
       toast.error("Please enter a valid email address");
       return;
     }
+
+    setShowModal(true);
   };
 
   const isDisabled = firstName === "" || lastName === "" || phone === "";
@@ -187,6 +198,8 @@ function Form() {
           </button>
         </div>
       </div>
+      {showModal &&
+        createPortal(<Modal handleClose={closeModal} />, document.body)}
     </form>
   );
 }
