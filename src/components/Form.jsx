@@ -23,12 +23,10 @@ function Form() {
 
   // Handle input data mutation
   const onMutate = (e) => {
-    if (e.target.value) {
-      setFormData({
-        ...formData,
-        [e.target.id]: e.target.value,
-      });
-    }
+    setFormData({
+      ...formData,
+      [e.target.id]: e.target.value,
+    });
   };
 
   const onSubmit = (e) => {
@@ -44,13 +42,26 @@ function Form() {
       return;
     }
 
+    const nameRegex = /^[a-zA-Z ]+$/;
+
+    if (!nameRegex.test(firstName)) {
+      toast.error("First Name must contain letters only.");
+      return;
+    }
+
+    if (!nameRegex.test(lastName)) {
+      toast.error("Last Name must contain letters only.");
+      return;
+    }
+
     if (phone === "") {
       toast.error("Phone number is required");
       return;
     }
 
-    // Regular expressions to validate phone number and email
-    const phoneRegex = /^[0-9]{10}$/;
+    // Regular expressions to check whether the digits have exactly 10 or 12 digits and Start with either "0" or "+251", followed by exactly 9 digits.
+    const phoneRegex = /^(?=.{10,12}$)(0|\+251|251)(9\d|\d{9})$/;
+
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if (!phoneRegex.test(phone)) {
@@ -58,11 +69,20 @@ function Form() {
       return;
     }
 
-    if (!emailRegex.test(email)) {
+    if (!email === "" && !emailRegex.test(email)) {
       toast.error("Please enter a valid email address");
       return;
     }
 
+    // clear input fields
+    setFormData({
+      firstName: "",
+      lastName: "",
+      phone: "",
+      email: "",
+      interest: "",
+      message: "",
+    });
     setShowModal(true);
   };
 
@@ -82,6 +102,7 @@ function Form() {
               </label>
               <input
                 required
+                value={firstName}
                 onChange={onMutate}
                 placeholder="eg. John"
                 type="text"
@@ -100,6 +121,7 @@ function Form() {
                 Last name
               </label>
               <input
+                value={lastName}
                 required
                 onChange={onMutate}
                 placeholder="eg. Doe"
@@ -119,6 +141,7 @@ function Form() {
                 Phone
               </label>
               <input
+                value={phone}
                 required
                 onChange={onMutate}
                 type="tel"
@@ -127,7 +150,7 @@ function Form() {
                 name="phone"
                 id="phone"
                 autoComplete="phone-number"
-                maxLength={10}
+                maxLength={12}
                 className="mt-2 block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-secondary sm:text-sm sm:leading-6"
               />
             </div>
@@ -140,6 +163,7 @@ function Form() {
                 Email address
               </label>
               <input
+                value={email}
                 onChange={onMutate}
                 placeholder="eg. johndoe@gmail.com"
                 type="text"
@@ -158,6 +182,7 @@ function Form() {
                 Interest
               </label>
               <select
+                value={interest}
                 onChange={onMutate}
                 id="interest"
                 name="interest"
@@ -177,6 +202,7 @@ function Form() {
                 Your message
               </label>
               <textarea
+                value={message}
                 onChange={onMutate}
                 placeholder="How can we help you?"
                 type="text"
@@ -192,7 +218,7 @@ function Form() {
             disabled={isDisabled}
             onClick={onSubmit}
             type="submit"
-            className="inline-flex justify-center rounded-md bg-secondary py-2 px-6 text-sm font-semibold text-white shadow-sm transition-transform duration-150 ease-in-out hover:scale-105 hover:bg-secondary/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary active:scale-95 disabled:bg-gray-400 disabled:hover:scale-100 disabled:active:scale-100"
+            className="inline-flex justify-center rounded-md bg-secondary py-2 px-6 text-sm font-semibold text-white shadow-sm transition-transform duration-150 ease-in-out hover:scale-105 hover:bg-secondary/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary active:scale-95 disabled:bg-gray-200 disabled:hover:scale-100 disabled:active:scale-100"
           >
             Submit
           </button>
