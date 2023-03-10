@@ -11,6 +11,7 @@ function Modal({ handleClose, progressValue, showModal, setProgressValue }) {
 
       return () => clearInterval(interval);
     }
+    // eslint-disable-next-line
   }, [showModal]);
 
   useEffect(() => {

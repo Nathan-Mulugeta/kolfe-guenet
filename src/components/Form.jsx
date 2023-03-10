@@ -1,7 +1,10 @@
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState } from "react";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { db } from "../firebase.config";
 import { toast } from "react-toastify";
 import { createPortal } from "react-dom";
 import Modal from "./Modal";
+import Spinner from "./Spinner";
 
 function Form() {
   const [formData, setFormData] = useState({
@@ -16,6 +19,7 @@ function Form() {
   const [showModal, setShowModal] = useState(false);
   const [invalidInput, setInvalidInput] = useState(null);
   const [progressValue, setProgressValue] = useState(100);
+  const [loading, setLoading] = useState(false);
 
   const firstNameRef = useRef(null);
   const lastNameRef = useRef(null);
@@ -38,7 +42,9 @@ function Form() {
     });
   };
 
-  const onSubmit = (e) => {
+  // Submit data
+
+  const onSubmit = async (e) => {
     e.preventDefault();
 
     if (firstName === "") {
@@ -128,29 +134,52 @@ function Form() {
     // If all validations pass
     setInvalidInput(null);
 
-    // clear input fields
-    setFormData({
-      firstName: "",
-      lastName: "",
-      phone: "",
-      email: "",
-      interest: "",
-      message: "",
-    });
+    try {
+      // Add data to firestore
+      setLoading(true);
+      //set a timestamp to know when the data is added.
+      const formDataCopy = {
+        ...formData,
+        timestamp: serverTimestamp(),
+      };
 
-    // Show success message
-    setShowModal(true);
-    setTimeout(() => {
-      closeModal();
-    }, 5000);
+      const docRef = await addDoc(collection(db, "members"), formDataCopy);
+
+      // clear input fields
+      setFormData({
+        firstName: "",
+        lastName: "",
+        phone: "",
+        email: "",
+        interest: "",
+        message: "",
+      });
+
+      setLoading(false);
+
+      // Show success message
+      setShowModal(true);
+      setTimeout(() => {
+        closeModal();
+      }, 5000);
+    } catch (error) {
+      setLoading(false);
+      toast.error("Something went wrong, can't submit form!");
+      console.log("Error Message: ", error);
+    }
   };
 
   const isDisabled = firstName === "" || lastName === "" || phone === "";
 
   return (
     <form>
-      <div className="-mb-32 overflow-hidden shadow sm:rounded-md lg:-mb-40">
+      <div className="relative -mb-32 overflow-hidden shadow sm:rounded-md lg:-mb-40">
         <div className="bg-white px-4 py-5 sm:p-6">
+          {loading && (
+            <div className="absolute inset-0 grid h-full w-full place-items-center bg-black/40">
+              <Spinner />
+            </div>
+          )}
           <div className="grid grid-cols-6 gap-6">
             <div className="col-span-6 sm:col-span-3">
               <label
