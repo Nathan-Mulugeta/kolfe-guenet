@@ -17,17 +17,6 @@ function Form() {
   const [invalidInput, setInvalidInput] = useState(null);
   const [progressValue, setProgressValue] = useState(100);
 
-  // set progress bar value
-  useEffect(() => {
-    if (showModal) {
-      const interval = setInterval(() => {
-        setProgressValue((prevProgress) => prevProgress - 100 / 50); // 50 intervals of 100ms each for 5000ms timeout
-      }, 100);
-
-      return () => clearInterval(interval);
-    }
-  }, [showModal]);
-
   const firstNameRef = useRef(null);
   const lastNameRef = useRef(null);
   const phoneRef = useRef(null);
@@ -310,7 +299,12 @@ function Form() {
       </div>
       {showModal &&
         createPortal(
-          <Modal progressValue={progressValue} handleClose={closeModal} />,
+          <Modal
+            progressValue={progressValue}
+            showModal={showModal}
+            setProgressValue={setProgressValue}
+            handleClose={closeModal}
+          />,
           document.body
         )}
     </form>

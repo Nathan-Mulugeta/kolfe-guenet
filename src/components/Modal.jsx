@@ -1,7 +1,18 @@
 import { useEffect } from "react";
 import { AiOutlineCheck } from "react-icons/ai";
 
-function Modal({ handleClose, progressValue }) {
+function Modal({ handleClose, progressValue, showModal, setProgressValue }) {
+  // set progress bar value
+  useEffect(() => {
+    if (showModal) {
+      const interval = setInterval(() => {
+        setProgressValue((prevProgress) => prevProgress - 0.5);
+      }, 25);
+
+      return () => clearInterval(interval);
+    }
+  }, [showModal]);
+
   useEffect(() => {
     document.body.classList.add("modal-open");
     return () => {
