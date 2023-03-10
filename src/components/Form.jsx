@@ -17,7 +17,7 @@ function Form() {
     lastName: "",
     phone: "",
     email: "",
-    interest: "Be a member",
+    interest: "",
     message: "",
   });
 
@@ -149,6 +149,11 @@ function Form() {
         timestamp: serverTimestamp(),
       };
 
+      // Check for empty fields
+      !formDataCopy.email && delete formDataCopy.email;
+      !formDataCopy.interest && delete formDataCopy.interest;
+      !formDataCopy.message && delete formDataCopy.message;
+
       const docRef = await addDoc(collection(db, "members"), formDataCopy);
 
       // get the data from server
@@ -171,7 +176,7 @@ function Form() {
       setShowModal(true);
       setTimeout(() => {
         closeModal();
-      }, 5000);
+      }, 10000);
     } catch (error) {
       setLoading(false);
       console.log(error);
@@ -300,9 +305,12 @@ function Form() {
                 name="interest"
                 className="mt-2 block w-full rounded-md border-0 bg-white py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-secondary sm:text-sm sm:leading-6"
               >
-                <option>Be a member</option>
-                <option>Joining a ministry or a group</option>
-                <option>Attending an event</option>
+                <option value="">Select</option>
+                <option value="Be a member">Be a member</option>
+                <option value="Joining a ministry or a group">
+                  Joining a ministry or a group
+                </option>
+                <option value="Attending an event">Attending an event</option>
               </select>
             </div>
 

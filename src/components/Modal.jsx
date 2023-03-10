@@ -13,7 +13,7 @@ function Modal({
     if (showModal) {
       const interval = setInterval(() => {
         setProgressValue((prevProgress) => prevProgress - 0.5);
-      }, 25);
+      }, 50);
 
       return () => clearInterval(interval);
     }
@@ -55,74 +55,81 @@ function Modal({
                 <h3 className="text-lg font-semibold leading-6 text-gray-900 sm:text-2xl">
                   Submit Successful
                 </h3>
-                <div className="mt-2">
-                  <p className="text-sm text-gray-500">
-                    All your data has been transferred successfully!
-                  </p>
-
+                <div className="mt-4">
                   {/* Code starts here */}
-                  <div className="grid grid-cols-6 gap-1">
-                    <div className="col-span-6 sm:col-span-3">
-                      <p className="block text-sm font-medium leading-6 text-gray-900">
-                        First name
-                      </p>
-                      <div
-                        className={`block w-full rounded-md border-0  bg-gray-200 p-1.5 text-gray-900 shadow-sm  placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-secondary sm:text-sm sm:leading-6`}
-                      >
-                        {data ? data.firstName : "No data"}
-                      </div>
-                    </div>
 
-                    <div className="col-span-6 sm:col-span-3">
-                      <p className="block text-sm font-medium leading-6 text-gray-900">
-                        Last name
-                      </p>
-                      <div
-                        className={`block w-full rounded-md border-0 bg-gray-200 p-1.5 text-gray-900 shadow-sm  placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-secondary sm:text-sm sm:leading-6`}
-                      >
-                        {data ? data.lastName : "No data"}
+                  <div className="grid min-w-[300px] grid-cols-6 gap-1 sm:min-w-[400px] sm:gap-x-2">
+                    {data && data.firstName && (
+                      <div className="col-span-6 flex items-center justify-between gap-4 sm:col-span-3">
+                        <p className="block text-sm font-medium leading-6 text-gray-900">
+                          First name
+                        </p>
+                        <div
+                          className={`block w-2/3 rounded-md border-0 bg-gray-200 p-1.5  text-gray-900 shadow-sm placeholder:text-gray-400 focus:ring-2  focus:ring-inset focus:ring-secondary sm:w-1/2 sm:text-sm sm:leading-6`}
+                        >
+                          {data && data.firstName ? data.firstName : "No data"}
+                        </div>
                       </div>
-                    </div>
+                    )}
 
-                    <div className="col-span-6 sm:col-span-6 lg:col-span-2">
-                      <p className="block text-sm font-medium leading-6 text-gray-900">
-                        Phone
-                      </p>
-                      <div
-                        className={`block w-full rounded-md border-0 bg-gray-200 p-1.5 text-gray-900 shadow-sm  placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-secondary sm:text-sm sm:leading-6`}
-                      >
-                        {data ? data.phone : "No data"}
+                    {data && data.lastName && (
+                      <div className="col-span-6 flex items-center justify-between gap-4 sm:col-span-3 sm:col-start-1">
+                        <p className="block text-sm font-medium leading-6 text-gray-900">
+                          Last name
+                        </p>
+                        <div
+                          className={`block w-2/3 rounded-md border-0 bg-gray-200 p-1.5 text-gray-900 shadow-sm placeholder:text-gray-400 focus:ring-2  focus:ring-inset focus:ring-secondary sm:w-1/2 sm:text-sm sm:leading-6`}
+                        >
+                          {data && data.lastName ? data.lastName : "No data"}
+                        </div>
                       </div>
-                    </div>
+                    )}
 
-                    <div className="col-span-6 sm:col-span-4">
-                      <p className="block text-sm font-medium leading-6 text-gray-900">
-                        Email address
-                      </p>
-                      <div
-                        className={`block w-full rounded-md border-0 bg-gray-200 p-1.5 text-gray-900 shadow-sm  placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-secondary sm:text-sm sm:leading-6`}
-                      >
-                        {data ? data.email : "No data"}
+                    {data && data.phone && (
+                      <div className="col-span-6 flex items-center justify-between gap-4 sm:col-span-3 sm:col-start-1">
+                        <p className="block text-sm font-medium leading-6 text-gray-900">
+                          Phone
+                        </p>
+                        <div
+                          className={`block w-2/3 rounded-md border-0 bg-gray-200 p-1.5 text-gray-900 shadow-sm placeholder:text-gray-400  focus:ring-2 focus:ring-inset focus:ring-secondary sm:w-1/2 sm:text-sm sm:leading-6`}
+                        >
+                          {data && data.phone ? data.phone : "No data"}
+                        </div>
                       </div>
-                    </div>
+                    )}
 
-                    <div className="col-span-6 sm:col-span-3">
-                      <p className="block text-sm font-medium leading-6 text-gray-900">
-                        Interest
-                      </p>
-                      <div className="block w-full rounded-md border-0 bg-gray-200 p-1.5 text-gray-900 shadow-sm  ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-secondary sm:text-sm sm:leading-6">
-                        {data ? data.interest : "No data"}
+                    {data && data.interest && (
+                      <div className="col-span-6 flex items-center justify-between sm:col-span-3 sm:col-start-1">
+                        <p className="block text-sm font-medium leading-6 text-gray-900">
+                          Interest
+                        </p>
+                        <div className="block w-2/3 rounded-md border-0 bg-gray-200 p-1.5 text-gray-900 shadow-sm ring-gray-300  focus:ring-2 focus:ring-inset focus:ring-secondary sm:w-1/2 sm:text-sm sm:leading-6">
+                          {data && data.interest ? data.interest : "No data"}
+                        </div>
                       </div>
-                    </div>
+                    )}
 
-                    <div className="col-span-6">
-                      <p className="block text-sm font-medium leading-6 text-gray-900">
-                        Your message
-                      </p>
-                    </div>
-                    <div className="block w-full rounded-md border-0 bg-gray-200 p-1.5 text-gray-900 shadow-sm  ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-secondary sm:text-sm sm:leading-6">
-                      {data ? data.message : "No data"}
-                    </div>
+                    {data && data.email && (
+                      <div className="col-span-6 overflow-hidden sm:col-span-3 sm:col-start-4 sm:row-start-1 sm:flex sm:items-center sm:justify-between">
+                        <p className="block text-sm font-medium leading-6 text-gray-900">
+                          Email
+                        </p>
+                        <div className="block w-full whitespace-normal rounded-md border-0 bg-gray-200 p-1.5 text-gray-900 shadow-sm placeholder:text-gray-400  hover:overflow-x-scroll focus:ring-2 focus:ring-inset focus:ring-secondary sm:w-2/3 sm:text-sm sm:leading-6">
+                          {data && data.email ? data.email : "No data"}
+                        </div>
+                      </div>
+                    )}
+
+                    {data && data.message && (
+                      <div className="col-span-6 overflow-hidden sm:col-span-3 sm:col-start-4 sm:row-span-3 sm:row-start-2">
+                        <p className="block text-sm font-medium leading-6 text-gray-900">
+                          Your message
+                        </p>
+                        <div className="block max-h-[100px] w-full overflow-y-scroll rounded-md border-0 bg-gray-200 p-2 text-gray-900  shadow-sm ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-secondary sm:text-sm sm:leading-6">
+                          {data && data.message ? data.message : "No data"}
+                        </div>
+                      </div>
+                    )}
                   </div>
                   {/* Code ends here */}
                 </div>
