@@ -1,7 +1,13 @@
 import { useEffect } from "react";
 import { AiOutlineCheck } from "react-icons/ai";
 
-function Modal({ handleClose, progressValue, showModal, setProgressValue }) {
+function Modal({
+  handleClose,
+  progressValue,
+  showModal,
+  setProgressValue,
+  data,
+}) {
   // set progress bar value
   useEffect(() => {
     if (showModal) {
@@ -53,6 +59,72 @@ function Modal({ handleClose, progressValue, showModal, setProgressValue }) {
                   <p className="text-sm text-gray-500">
                     All your data has been transferred successfully!
                   </p>
+
+                  {/* Code starts here */}
+                  <div className="grid grid-cols-6 gap-1">
+                    <div className="col-span-6 sm:col-span-3">
+                      <p className="block text-sm font-medium leading-6 text-gray-900">
+                        First name
+                      </p>
+                      <div
+                        className={`block w-full rounded-md border-0  bg-gray-200 p-1.5 text-gray-900 shadow-sm  placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-secondary sm:text-sm sm:leading-6`}
+                      >
+                        {data ? data.firstName : "No data"}
+                      </div>
+                    </div>
+
+                    <div className="col-span-6 sm:col-span-3">
+                      <p className="block text-sm font-medium leading-6 text-gray-900">
+                        Last name
+                      </p>
+                      <div
+                        className={`block w-full rounded-md border-0 bg-gray-200 p-1.5 text-gray-900 shadow-sm  placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-secondary sm:text-sm sm:leading-6`}
+                      >
+                        {data ? data.lastName : "No data"}
+                      </div>
+                    </div>
+
+                    <div className="col-span-6 sm:col-span-6 lg:col-span-2">
+                      <p className="block text-sm font-medium leading-6 text-gray-900">
+                        Phone
+                      </p>
+                      <div
+                        className={`block w-full rounded-md border-0 bg-gray-200 p-1.5 text-gray-900 shadow-sm  placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-secondary sm:text-sm sm:leading-6`}
+                      >
+                        {data ? data.phone : "No data"}
+                      </div>
+                    </div>
+
+                    <div className="col-span-6 sm:col-span-4">
+                      <p className="block text-sm font-medium leading-6 text-gray-900">
+                        Email address
+                      </p>
+                      <div
+                        className={`block w-full rounded-md border-0 bg-gray-200 p-1.5 text-gray-900 shadow-sm  placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-secondary sm:text-sm sm:leading-6`}
+                      >
+                        {data ? data.email : "No data"}
+                      </div>
+                    </div>
+
+                    <div className="col-span-6 sm:col-span-3">
+                      <p className="block text-sm font-medium leading-6 text-gray-900">
+                        Interest
+                      </p>
+                      <div className="block w-full rounded-md border-0 bg-gray-200 p-1.5 text-gray-900 shadow-sm  ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-secondary sm:text-sm sm:leading-6">
+                        {data ? data.interest : "No data"}
+                      </div>
+                    </div>
+
+                    <div className="col-span-6">
+                      <p className="block text-sm font-medium leading-6 text-gray-900">
+                        Your message
+                      </p>
+                    </div>
+                    <div className="block w-full rounded-md border-0 bg-gray-200 p-1.5 text-gray-900 shadow-sm  ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-secondary sm:text-sm sm:leading-6">
+                      {data ? data.message : "No data"}
+                    </div>
+                  </div>
+                  {/* Code ends here */}
                 </div>
               </div>
             </div>

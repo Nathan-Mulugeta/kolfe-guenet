@@ -2,13 +2,13 @@ import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDGMtURXEEmPGLeuYTnPBcZBgL9Lx9j3qs",
-  authDomain: "kolfe-guenet.firebaseapp.com",
-  projectId: "kolfe-guenet",
-  storageBucket: "kolfe-guenet.appspot.com",
-  messagingSenderId: "831427593276",
-  appId: "1:831427593276:web:b8824608c6d71999c3af39",
-  measurementId: "G-QT58SY0ZRR",
+  apiKey: "AIzaSyAR37z6z4sz6_SCXwQNUr8rcV01yforIY8",
+  authDomain: "kolfe-guenet-website.firebaseapp.com",
+  projectId: "kolfe-guenet-website",
+  storageBucket: "kolfe-guenet-website.appspot.com",
+  messagingSenderId: "278657560466",
+  appId: "1:278657560466:web:a7edb59f840d345c14db4b",
+  measurementId: "G-ZD8JB1V5F8",
 };
 
 // Initialize Firebase

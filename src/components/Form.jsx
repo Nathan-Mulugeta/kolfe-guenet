@@ -1,5 +1,10 @@
 import { useRef, useState } from "react";
-import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import {
+  collection,
+  getDoc,
+  addDoc,
+  serverTimestamp,
+} from "firebase/firestore";
 import { db } from "../firebase.config";
 import { toast } from "react-toastify";
 import { createPortal } from "react-dom";
@@ -12,7 +17,7 @@ function Form() {
     lastName: "",
     phone: "",
     email: "",
-    interest: "",
+    interest: "Be a member",
     message: "",
   });
 
@@ -20,6 +25,7 @@ function Form() {
   const [invalidInput, setInvalidInput] = useState(null);
   const [progressValue, setProgressValue] = useState(100);
   const [loading, setLoading] = useState(false);
+  const [docSnapData, setDocSnapData] = useState(null);
 
   const firstNameRef = useRef(null);
   const lastNameRef = useRef(null);
@@ -145,6 +151,10 @@ function Form() {
 
       const docRef = await addDoc(collection(db, "members"), formDataCopy);
 
+      // get the data from server
+      const docSnap = await getDoc(docRef);
+      setDocSnapData(docSnap.data());
+
       // clear input fields
       setFormData({
         firstName: "",
@@ -164,8 +174,8 @@ function Form() {
       }, 5000);
     } catch (error) {
       setLoading(false);
+      console.log(error);
       toast.error("Something went wrong, can't submit form!");
-      console.log("Error Message: ", error);
     }
   };
 
@@ -176,7 +186,7 @@ function Form() {
       <div className="relative -mb-32 overflow-hidden shadow sm:rounded-md lg:-mb-40">
         <div className="bg-white px-4 py-5 sm:p-6">
           {loading && (
-            <div className="absolute inset-0 grid h-full w-full place-items-center bg-black/40">
+            <div className="absolute inset-0 grid h-full w-full place-items-center bg-white/75">
               <Spinner />
             </div>
           )}
@@ -333,6 +343,7 @@ function Form() {
             showModal={showModal}
             setProgressValue={setProgressValue}
             handleClose={closeModal}
+            data={docSnapData}
           />,
           document.body
         )}
