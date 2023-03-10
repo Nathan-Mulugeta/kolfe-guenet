@@ -38,6 +38,7 @@ function Form() {
   // Close modal
   const closeModal = () => {
     setShowModal(false);
+    setProgressValue(100);
   };
 
   // Handle input data mutation
@@ -151,7 +152,7 @@ function Form() {
     // Show success message
     setShowModal(true);
     setTimeout(() => {
-      setShowModal(false);
+      closeModal();
     }, 5000);
   };
 
