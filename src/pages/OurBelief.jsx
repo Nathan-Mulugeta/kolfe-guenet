@@ -1,7 +1,10 @@
+import { useRef } from "react";
+
 function OurBelief() {
+  const contentRef = useRef();
+
   function scrollToContent() {
-    const contentSection = document.getElementById("content");
-    contentSection.scrollIntoView({
+    contentRef.current.scrollIntoView({
       behavior: "smooth",
       block: "center",
     });
@@ -33,7 +36,7 @@ function OurBelief() {
         </div>
       </section>
 
-      <article id="content">
+      <article ref={contentRef} id="content">
         <div className="container m-4 mx-auto grid gap-4 md:grid-cols-2">
           <div className="space-y-4 p-4">
             <h1 className="text-3xl font-bold">About God</h1>

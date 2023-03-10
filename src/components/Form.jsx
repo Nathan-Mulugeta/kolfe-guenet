@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { createPortal } from "react-dom";
 import Modal from "./Modal";
@@ -12,7 +12,26 @@ function Form() {
     interest: "",
     message: "",
   });
+
   const [showModal, setShowModal] = useState(false);
+  const [invalidInput, setInvalidInput] = useState(null);
+  const [progressValue, setProgressValue] = useState(100);
+
+  // set progress bar value
+  useEffect(() => {
+    if (showModal) {
+      const interval = setInterval(() => {
+        setProgressValue((prevProgress) => prevProgress - 100 / 50); // 50 intervals of 100ms each for 5000ms timeout
+      }, 100);
+
+      return () => clearInterval(interval);
+    }
+  }, [showModal]);
+
+  const firstNameRef = useRef(null);
+  const lastNameRef = useRef(null);
+  const phoneRef = useRef(null);
+  const emailRef = useRef(null);
 
   const { firstName, lastName, phone, email, interest, message } = formData;
 
@@ -33,11 +52,21 @@ function Form() {
     e.preventDefault();
 
     if (firstName === "") {
+      setInvalidInput("firstName");
       toast.error("First Name is required");
+      firstNameRef.current.scrollIntoView({
+        behaviour: "smooth",
+        block: "center",
+      });
       return;
     }
 
     if (lastName === "") {
+      setInvalidInput("lastName");
+      lastNameRef.current.scrollIntoView({
+        behaviour: "smooth",
+        block: "center",
+      });
       toast.error("Last Name is required");
       return;
     }
@@ -45,16 +74,35 @@ function Form() {
     const nameRegex = /^[a-zA-Z ]+$/;
 
     if (!nameRegex.test(firstName)) {
+      setInvalidInput("firstName");
+      firstNameRef.current.scrollIntoView({
+        behaviour: "smooth",
+        block: "center",
+      });
       toast.error("First Name must contain letters only.");
       return;
     }
 
     if (!nameRegex.test(lastName)) {
+      setInvalidInput("lastName");
+
+      lastNameRef.current.scrollIntoView({
+        behaviour: "smooth",
+        block: "center",
+      });
+
       toast.error("Last Name must contain letters only.");
       return;
     }
 
     if (phone === "") {
+      setInvalidInput("phone");
+
+      phoneRef.current.scrollIntoView({
+        behaviour: "smooth",
+        block: "center",
+      });
+
       toast.error("Phone number is required");
       return;
     }
@@ -65,14 +113,30 @@ function Form() {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if (!phoneRegex.test(phone)) {
+      setInvalidInput("phone");
+
+      phoneRef.current.scrollIntoView({
+        behaviour: "smooth",
+        block: "center",
+      });
       toast.error("Please enter a valid phone number");
       return;
     }
 
-    if (!email === "" && !emailRegex.test(email)) {
+    if (email !== "" && !emailRegex.test(email)) {
+      setInvalidInput("email");
+
+      emailRef.current.scrollIntoView({
+        behaviour: "smooth",
+        block: "center",
+      });
+
       toast.error("Please enter a valid email address");
       return;
     }
+
+    // If all validations pass
+    setInvalidInput(null);
 
     // clear input fields
     setFormData({
@@ -83,7 +147,12 @@ function Form() {
       interest: "",
       message: "",
     });
+
+    // Show success message
     setShowModal(true);
+    setTimeout(() => {
+      setShowModal(false);
+    }, 5000);
   };
 
   const isDisabled = firstName === "" || lastName === "" || phone === "";
@@ -101,6 +170,7 @@ function Form() {
                 First name
               </label>
               <input
+                ref={firstNameRef}
                 required
                 value={firstName}
                 onChange={onMutate}
@@ -109,7 +179,11 @@ function Form() {
                 name="firstName"
                 id="firstName"
                 autoComplete="given-name"
-                className="mt-2 block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-secondary sm:text-sm sm:leading-6"
+                className={`mt-2 block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ${
+                  invalidInput === "firstName"
+                    ? "ring-red-500"
+                    : "ring-gray-300"
+                } placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-secondary sm:text-sm sm:leading-6`}
               />
             </div>
 
@@ -121,6 +195,7 @@ function Form() {
                 Last name
               </label>
               <input
+                ref={lastNameRef}
                 value={lastName}
                 required
                 onChange={onMutate}
@@ -129,7 +204,9 @@ function Form() {
                 name="lastName"
                 id="lastName"
                 autoComplete="family-name"
-                className="mt-2 block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-secondary sm:text-sm sm:leading-6"
+                className={`mt-2 block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ${
+                  invalidInput === "lastName" ? "ring-red-500" : "ring-gray-300"
+                } placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-secondary sm:text-sm sm:leading-6`}
               />
             </div>
 
@@ -141,6 +218,7 @@ function Form() {
                 Phone
               </label>
               <input
+                ref={phoneRef}
                 value={phone}
                 required
                 onChange={onMutate}
@@ -151,7 +229,9 @@ function Form() {
                 id="phone"
                 autoComplete="phone-number"
                 maxLength={12}
-                className="mt-2 block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-secondary sm:text-sm sm:leading-6"
+                className={`mt-2 block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ${
+                  invalidInput === "phone" ? "ring-red-500" : "ring-gray-300"
+                } placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-secondary sm:text-sm sm:leading-6`}
               />
             </div>
 
@@ -163,6 +243,7 @@ function Form() {
                 Email address
               </label>
               <input
+                ref={emailRef}
                 value={email}
                 onChange={onMutate}
                 placeholder="eg. johndoe@gmail.com"
@@ -170,7 +251,9 @@ function Form() {
                 name="email"
                 id="email"
                 autoComplete="email"
-                className="mt-2 block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-secondary sm:text-sm sm:leading-6"
+                className={`mt-2 block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ${
+                  invalidInput === "email" ? "ring-red-500" : "ring-gray-300"
+                } placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-secondary sm:text-sm sm:leading-6`}
               />
             </div>
 
@@ -225,7 +308,10 @@ function Form() {
         </div>
       </div>
       {showModal &&
-        createPortal(<Modal handleClose={closeModal} />, document.body)}
+        createPortal(
+          <Modal progressValue={progressValue} handleClose={closeModal} />,
+          document.body
+        )}
     </form>
   );
 }

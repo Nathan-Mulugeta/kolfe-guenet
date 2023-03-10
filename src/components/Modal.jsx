@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { AiOutlineCheck } from "react-icons/ai";
 
-function Modal({ handleClose }) {
+function Modal({ handleClose, progressValue }) {
   useEffect(() => {
     document.body.classList.add("modal-open");
     return () => {
@@ -23,6 +23,11 @@ function Modal({ handleClose }) {
         className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0"
       >
         <div className="relative transform overflow-hidden rounded-lg bg-white pb-1 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+          <progress
+            className="progress progress-secondary absolute top-0 left-0 right-0 w-full"
+            value={progressValue}
+            max="100"
+          ></progress>
           <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
             <div className="mx-auto mb-6 flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-full bg-green-100 sm:mx-auto">
               <AiOutlineCheck className="text-2xl text-green-600" />
