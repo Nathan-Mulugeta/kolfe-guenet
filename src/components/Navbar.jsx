@@ -360,13 +360,13 @@ export default function Navbar() {
 
           <button
             onClick={handleSignInClick}
-            className={`rounded-full px-4 py-2 text-sm font-semibold text-white ${
-              scroll ? "text-secondary" : ""
+            className={`rounded-full px-4 py-2 text-sm font-semibold ${
+              scroll ? "text-secondary ring-secondary hover:text-white" : "text-white ring-white"
             } ${
               loading
                 ? "cursor-wait bg-white/80"
-                : "bg-gradient-to-r from-primary to-secondary transition-all duration-300 ease-in-out hover:from-secondary hover:to-primary"
-            }`}
+                : "transition-all duration-300 ease-in-out"
+            } ring-1 hover:ring-0 hover:bg-black`}
             disabled={loading}
           >
             {signedIn ? "Sign Out" : "Sign In"}

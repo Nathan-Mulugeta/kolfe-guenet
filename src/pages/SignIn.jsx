@@ -48,9 +48,9 @@ function SignIn() {
   };
 
   return (
-    <div className="bg container relative mx-auto flex min-h-screen items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div className="container mx-auto flex h-screen items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       {loading && (
-        <div className="absolute inset-0 z-50 grid h-full w-full place-items-center bg-black/50">
+        <div className="fixed inset-0 z-50 grid h-full w-full place-items-center bg-black/25">
           <Spinner />
         </div>
       )}
@@ -65,12 +65,13 @@ function SignIn() {
       <div className="w-full max-w-md space-y-8">
         <div>
           <MdOutlineAdminPanelSettings className="mx-auto text-7xl text-white " />
-          <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-white">
-            Sign in to your account
-          </h2>
           <h2 className="text-center text-lg font-semibold tracking-wide text-gray-100">
             Staffs only
           </h2>
+          <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-white">
+            Sign in to your account
+          </h2>
+          
         </div>
         <form onSubmit={onSubmit} className="mt-8 space-y-6">
           <input type="hidden" name="remember" defaultValue="true" />
@@ -125,14 +126,14 @@ function SignIn() {
               </label>
             </div>
 
-            <div className="text-sm">
+            {/* <div className="text-sm">
               <a
                 href="#"
                 className="font-medium text-white hover:text-secondary/50"
               >
                 Forgot your password?
               </a>
-            </div>
+            </div> */}
           </div>
 
           <div>

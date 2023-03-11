@@ -13,35 +13,35 @@ function Footer() {
 
   return (
     <footer className="footer footer-center bg-gray-800 p-10 text-normal">
-      <div className="grid grid-flow-col gap-4">
+      <div className="grid sm:flex grid-cols-5 grid-rows-2 gap-4">
         <NavLink to="/" className="link-hover link" onClick={handleTopScroll}>
           Home
         </NavLink>
         <NavLink
           to="heaven-gate"
           onClick={handleTopScroll}
-          className="link-hover link"
+          className="link-hover link col-span-3"
         >
           Heaven's Gate
         </NavLink>
         <NavLink
           to="/our-belief"
           onClick={handleTopScroll}
-          className="link-hover link"
+          className="link-hover link col-span-2"
         >
           Our Belief
         </NavLink>
         <NavLink
           to="/staff"
           onClick={handleTopScroll}
-          className="link-hover link"
+          className="link-hover link col-start-5 row-start-1"
         >
           Staff
         </NavLink>
         <NavLink
           to="/contact-us"
           onClick={handleTopScroll}
-          className="link-hover link"
+          className="link-hover link col-span-2 col-start-4"
         >
           Contact Us
         </NavLink>
