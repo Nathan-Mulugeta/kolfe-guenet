@@ -9,6 +9,7 @@ import OurBelief from "./pages/OurBelief";
 import ContactUs from "./ContactUs";
 import Staff from "./Staff";
 import SignIn from "./pages/SignIn";
+import Profile from "./pages/Profile";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
             <Route path="/staff" element={<Staff />} />
             <Route path="/contact-us" element={<ContactUs />} />
             <Route path="/sign-in" element={<SignIn />} />
+            <Route path="/profile" element={<Profile />} />
           </Routes>
         </main>
         <Footer />
