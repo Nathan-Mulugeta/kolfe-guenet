@@ -213,12 +213,6 @@ export default function Navbar() {
                 fill="#55A6D9"
               />
             </motion.svg>
-
-            {/* <img
-              className={`h-8 w-auto rounded-md`}
-              src={churchLogoSvg}
-              alt="Kolfe Guenet Church"
-            /> */}
           </NavLink>
 
           {/* Menu items */}
@@ -322,21 +316,17 @@ export default function Navbar() {
                 </div>
               </div>
             </div>
-
-            {/* <NavLink
-              onClick={handleTopScroll}
-              to="/D"
-              className={({ isActive }) =>
-                `${
-                  isActive ? "bg-secondary text-white" : "hover:bg-secondary/25"
-                } rounded-md px-3 py-1 ${
-                  scroll ? "text-secondary" : "text-white"
-                } transition duration-200 ease-in-out`
-              }
-            >
-              Projects
-            </NavLink> */}
           </ul>
+
+          {/* Sign in button */}
+          <button
+            onClick={handleTopScroll}
+            className={`${
+              scroll ? "text-secondary" : "text-white"
+            } hover:text-black`}
+          >
+            <NavLink to="/sign-in">Sign in</NavLink>
+          </button>
         </div>
 
         {/* Menu items for mobile */}

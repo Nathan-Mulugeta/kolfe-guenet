@@ -8,6 +8,7 @@ import HeavenGate from "./pages/HeavenGate";
 import OurBelief from "./pages/OurBelief";
 import ContactUs from "./ContactUs";
 import Staff from "./Staff";
+import SignIn from "./pages/SignIn";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
             <Route path="/our-belief" element={<OurBelief />} />
             <Route path="/staff" element={<Staff />} />
             <Route path="/contact-us" element={<ContactUs />} />
+            <Route path="/sign-in" element={<SignIn />} />
           </Routes>
         </main>
         <Footer />
