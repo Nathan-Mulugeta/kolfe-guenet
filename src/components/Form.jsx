@@ -201,7 +201,7 @@ function Form() {
                 htmlFor="firstName"
                 className="block text-sm font-medium leading-6 text-gray-900"
               >
-                First name
+                First name *
               </label>
               <input
                 ref={firstNameRef}
@@ -226,7 +226,7 @@ function Form() {
                 htmlFor="lastName"
                 className="block text-sm font-medium leading-6 text-gray-900"
               >
-                Last name
+                Last name *
               </label>
               <input
                 ref={lastNameRef}
@@ -249,7 +249,7 @@ function Form() {
                 htmlFor="phone"
                 className="block text-sm font-medium leading-6 text-gray-900"
               >
-                Phone
+                Phone *
               </label>
               <input
                 ref={phoneRef}

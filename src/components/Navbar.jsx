@@ -1,9 +1,10 @@
 import { useState, useRef, useEffect } from "react";
-import { NavLink } from "react-router-dom";
-// import churchLogo from "../assets/jpg/logo.png";
-// import churchLogoSvg from "../assets/svg/churchLogoSvg.svg";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "../firebase.config";
+import { NavLink, useNavigate } from "react-router-dom";
 import { BsChevronDown } from "react-icons/bs";
 import { motion } from "framer-motion";
+import { toast } from "react-toastify";
 
 export default function Navbar() {
   const [navOpen, setNavOpen] = useState(false);
@@ -11,6 +12,8 @@ export default function Navbar() {
   const dropRef = useRef(null);
   const [scroll, setScroll] = useState(false);
   const [dropDownOpen, setDropDownOpen] = useState(false);
+  const [signedIn, setSignedIn] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const svgVariant = {
     hidden: {
@@ -112,6 +115,41 @@ export default function Navbar() {
 
   const handleDropDownToggle = () => {
     setDropDownOpen(!dropDownOpen);
+  };
+
+  // Handle user signed in or not
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setSignedIn(true);
+      } else {
+        setSignedIn(false);
+      }
+    });
+
+    return unsubscribe;
+  }, []);
+
+  const navigate = useNavigate();
+
+  // Log out user
+
+  const handleSignInClick = async () => {
+    setLoading(true);
+    try {
+      if (signedIn) {
+        await auth.signOut();
+        setSignedIn(false);
+        setLoading(false);
+      } else {
+        navigate("/sign-in");
+        setLoading(false);
+      }
+    } catch (error) {
+      setLoading(false);
+      toast.error("Can not sign out.");
+    }
   };
 
   return (
@@ -318,14 +356,15 @@ export default function Navbar() {
             </div>
           </ul>
 
-          {/* Sign in button */}
+          {/* Sign in/out button */}
+
           <button
-            onClick={handleTopScroll}
-            className={`${
-              scroll ? "text-secondary" : "text-white"
-            } hover:text-black`}
+            onClick={handleSignInClick}
+            className={`${scroll ? "text-secondary" : "text-white"} ${
+              loading ? "bg-white/80" : ""
+            } rounded-full p-1 text-sm hover:text-black`}
           >
-            <NavLink to="/sign-in">Sign in</NavLink>
+            {signedIn ? "Sign out" : "Sign in"}
           </button>
         </div>
 

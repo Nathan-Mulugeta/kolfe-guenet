@@ -1,9 +1,59 @@
+import { useState } from "react";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../firebase.config";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import { BsLockFill } from "react-icons/bs";
 import { MdOutlineAdminPanelSettings } from "react-icons/md";
+import Spinner from "../components/Spinner";
 
 function SignIn() {
+  const [loading, setLoading] = useState(false);
+
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+
+  const { email, password } = formData;
+
+  const navigate = useNavigate();
+
+  const onChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.id]: e.target.value,
+    });
+  };
+
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const user = userCredential.user;
+      if (user) {
+        navigate("/");
+        setLoading(false);
+      }
+    } catch (error) {
+      setLoading(false);
+      toast.error("User does not exist");
+    }
+  };
+
   return (
     <div className="bg container relative mx-auto flex min-h-screen items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+      {loading && (
+        <div className="absolute inset-0 z-50 grid h-full w-full place-items-center bg-black/50">
+          <Spinner />
+        </div>
+      )}
       <div
         className="fixed inset-0 -z-10"
         style={{
@@ -22,7 +72,7 @@ function SignIn() {
             Staffs only
           </h2>
         </div>
-        <form className="mt-8 space-y-6">
+        <form onSubmit={onSubmit} className="mt-8 space-y-6">
           <input type="hidden" name="remember" defaultValue="true" />
           <div className="space-y-4 rounded-md shadow-sm">
             <div>
@@ -30,13 +80,15 @@ function SignIn() {
                 Email address
               </label>
               <input
-                id="email-address"
+                value={email}
+                onChange={onChange}
+                id="email"
                 name="email"
                 type="email"
                 autoComplete="email"
                 required
                 className="relative block w-full rounded-t-md border-0 p-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-secondary sm:text-sm sm:leading-6"
-                placeholder="Email address"
+                placeholder="Email address *"
               />
             </div>
             <div>
@@ -44,13 +96,15 @@ function SignIn() {
                 Password
               </label>
               <input
+                value={password}
+                onChange={onChange}
                 id="password"
                 name="password"
                 type="password"
-                autoComplete="current-password"
+                autoComplete="password"
                 required
                 className="relative block w-full rounded-b-md border-0 p-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-secondary sm:text-sm sm:leading-6"
-                placeholder="Password"
+                placeholder="Password *"
               />
             </div>
           </div>
@@ -84,11 +138,11 @@ function SignIn() {
           <div>
             <button
               type="submit"
-              className="group relative flex w-full justify-center rounded-md bg-black/60 py-2 px-3 text-sm font-semibold text-white hover:bg-black/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black/60"
+              className="group relative flex w-full justify-center rounded-md bg-black/60 py-2 px-3 text-sm font-semibold text-white transition-all hover:bg-black/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black/60 active:scale-95"
             >
               <span className="absolute inset-y-0 left-0 flex items-center pl-3">
                 <BsLockFill
-                  className="h-5 w-5 text-white group-hover:text-black/40"
+                  className="h-5 w-5 text-white group-hover:text-primary/40"
                   aria-hidden="true"
                 />
               </span>
