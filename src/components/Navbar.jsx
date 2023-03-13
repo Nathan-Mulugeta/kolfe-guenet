@@ -1,65 +1,34 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../firebase.config";
-import { NavLink, useNavigate } from "react-router-dom";
-import { BsChevronDown } from "react-icons/bs";
-import { motion } from "framer-motion";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import Avatar from "./Avatar";
-import { Fragment } from "react";
-import { Disclosure, Menu, Transition } from "@headlessui/react";
-import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
-
-const navigation = [
-  { name: "Home", to: "/", current: true },
-  { name: "Heaven's Gate Project", to: "/heaven-gate", current: false },
-  { name: "Our Belief", to: "/our-belief", current: false },
-  { name: "Staff", to: "/staff", current: false },
-  { name: "Contact Us", to: "/contact-us", current: false },
-];
+import { Menu, Transition } from "@headlessui/react";
+import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
+import Logo from "../assets/jpg/logo.png";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
 export default function Navbar() {
-  const [navOpen, setNavOpen] = useState(false);
-  const navRef = useRef(null);
-  const dropRef = useRef(null);
-  const [scroll, setScroll] = useState(false);
-  const [dropDownOpen, setDropDownOpen] = useState(false);
   const [signedIn, setSignedIn] = useState(false);
 
-  const svgVariant = {
-    hidden: {
-      // scale: 100,
-    },
-    visible: {
-      // scale: [100, 0.5, 1],
-      transition: {
-        duration: 3,
-        ease: "easeInOut",
-        type: "spring",
-        stiffness: 300,
-      },
-    },
-  };
+  const location = useLocation();
 
-  const pathVariant = {
-    hidden: {
-      pathLength: 0,
-    },
-    visible: {
-      pathLength: 1,
-      transition: {
-        duration: 3,
-        ease: "easeInOut",
-      },
-    },
-  };
+  const navigation = [
+    { name: "Home", to: "/" },
+    { name: "Heaven's Gate Project", to: "/heaven-gate" },
+    { name: "Our Belief", to: "/our-belief" },
+    { name: "Staff", to: "/staff" },
+    { name: "Contact Us", to: "/contact-us" },
+  ].map((item) => ({
+    ...item,
+    current: location.pathname === item.to,
+  }));
 
   // Handle user signed in or not
-
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -72,9 +41,10 @@ export default function Navbar() {
     return unsubscribe;
   }, []);
 
+  // Log out user
   const navigate = useNavigate();
 
-  // Log out user
+  // Handle user sign out
   const handleSignOut = async () => {
     try {
       if (signedIn) {
@@ -89,37 +59,42 @@ export default function Navbar() {
 
   return (
     <>
-      {/* From Tailwind */}
-      <Disclosure as="nav" className="bg-gray-800">
+      <Menu
+        as="nav"
+        className="fixed top-0 left-0 right-0 z-50 bg-white drop-shadow-md"
+      >
         {({ open }) => (
           <>
             <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
               <div className="relative flex h-16 items-center justify-between">
-                <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
-                  {/* Mobile menu button*/}
-                  <Disclosure.Button className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
+                <div className="absolute inset-y-0 left-0 flex items-center md:hidden">
+                  {/* Hamburger icon*/}
+
+                  <Menu.Button className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-secondary hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
                     <span className="sr-only">Open main menu</span>
                     {open ? (
                       <XMarkIcon className="block h-6 w-6" aria-hidden="true" />
                     ) : (
                       <Bars3Icon className="block h-6 w-6" aria-hidden="true" />
                     )}
-                  </Disclosure.Button>
+                  </Menu.Button>
                 </div>
-                <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
+
+                {/* Logo and Desktop nav menus */}
+                <div className="flex flex-1 items-center justify-center md:items-stretch md:justify-start">
+                  {/* Logo */}
                   <div className="flex flex-shrink-0 items-center">
-                    <img
-                      className="block h-8 w-auto lg:hidden"
-                      src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-                      alt="Your Company"
-                    />
-                    <img
-                      className="hidden h-8 w-auto lg:block"
-                      src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-                      alt="Your Company"
-                    />
+                    <NavLink to="/">
+                      <img
+                        className="block h-8 w-auto lg:hidden"
+                        src={Logo}
+                        alt="Kolfe Guenet Church"
+                      />
+                    </NavLink>
                   </div>
-                  <div className="hidden sm:ml-6 sm:block">
+
+                  {/* Desktop nav menus */}
+                  <div className="hidden md:ml-6 md:block">
                     <div className="flex space-x-4">
                       {navigation.map((item) => (
                         <NavLink
@@ -127,8 +102,8 @@ export default function Navbar() {
                           to={item.to}
                           className={classNames(
                             item.current
-                              ? "bg-gray-900 text-white"
-                              : "text-gray-300 hover:bg-gray-700 hover:text-white",
+                              ? "bg-secondary text-white"
+                              : "text-gray-500 hover:bg-secondary/75 hover:text-white",
                             "rounded-md px-3 py-2 text-sm font-medium"
                           )}
                           aria-current={item.current ? "page" : undefined}
@@ -139,6 +114,8 @@ export default function Navbar() {
                     </div>
                   </div>
                 </div>
+
+                {/* Avatar or sign in */}
                 <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                   {/* Profile dropdown */}
                   {signedIn ? (
@@ -146,11 +123,7 @@ export default function Navbar() {
                   ) : (
                     <NavLink
                       to="/sign-in"
-                      className={`rounded-full px-4 py-2 text-sm font-semibold ${
-                        scroll
-                          ? "text-secondary ring-secondary hover:text-white"
-                          : "text-white ring-white"
-                      } ring-1 hover:bg-black hover:ring-0`}
+                      className={`rounded-full px-4 py-2 text-sm font-semibold  ring-1 hover:bg-black hover:ring-0`}
                     >
                       Sign In
                     </NavLink>
@@ -159,31 +132,41 @@ export default function Navbar() {
               </div>
             </div>
 
-            <Disclosure.Panel className="sm:hidden">
-              <div className="space-y-1 px-2 pt-2 pb-3">
-                {navigation.map((item) => (
-                  <Disclosure.Button>
-                    <NavLink
-                      key={item.name}
-                      // as="a"
-                      to={item.to}
-                      className={classNames(
-                        item.current
-                          ? "bg-gray-900 text-white"
-                          : "text-gray-300 hover:bg-gray-700 hover:text-white",
-                        "block rounded-md px-3 py-2 text-base font-medium"
-                      )}
-                      aria-current={item.current ? "page" : undefined}
-                    >
-                      {item.name}
-                    </NavLink>
-                  </Disclosure.Button>
-                ))}
-              </div>
-            </Disclosure.Panel>
+            {/* Mobile menu */}
+            <Transition
+              enter="transition ease-out duration-200"
+              enterFrom="opacity-0 translate-y-1"
+              enterTo="opacity-100 translate-y-0"
+              leave="transition ease-in duration-150"
+              leaveFrom="opacity-100 translate-y-0"
+              leaveTo="opacity-0 translate-y-1"
+            >
+              <Menu.Items className="sm:hidden">
+                <div className="absolute w-screen flex-auto overflow-hidden rounded-b-3xl bg-white text-sm leading-6 ring-1 ring-gray-900/5">
+                  <div className="space-y-1 p-4">
+                    {navigation.map((item) => (
+                      <Menu.Item>
+                        <NavLink
+                          key={item.name}
+                          to={item.to}
+                          className={classNames(
+                            item.current
+                              ? "bg-secondary text-white"
+                              : "text-black hover:bg-secondary/50 hover:text-white",
+                            "block rounded-md px-3 py-2 text-base font-medium"
+                          )}
+                        >
+                          {item.name}
+                        </NavLink>
+                      </Menu.Item>
+                    ))}
+                  </div>
+                </div>
+              </Menu.Items>
+            </Transition>
           </>
         )}
-      </Disclosure>
+      </Menu>
     </>
   );
 }
