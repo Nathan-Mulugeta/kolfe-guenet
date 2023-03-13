@@ -10,6 +10,7 @@ import ContactUs from "./ContactUs";
 import Staff from "./Staff";
 import SignIn from "./pages/SignIn";
 import Profile from "./pages/Profile";
+import PrivateRoute from "./components/PrivateRoute";
 
 function App() {
   return (
@@ -26,7 +27,9 @@ function App() {
             <Route path="/staff" element={<Staff />} />
             <Route path="/contact-us" element={<ContactUs />} />
             <Route path="/sign-in" element={<SignIn />} />
-            <Route path="/profile" element={<Profile />} />
+            <Route path="/profile" element={<PrivateRoute />}>
+              <Route path="/profile" element={<Profile />} />
+            </Route>
           </Routes>
         </main>
         <Footer />

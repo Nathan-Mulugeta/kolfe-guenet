@@ -60,6 +60,7 @@ function SignIn() {
           backgroundImage: `url("https://images.unsplash.com/photo-1557683316-973673baf926?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTB8fGdyYWRpZW50fGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60")`,
           backgroundRepeat: "no-repeat",
           backgroundSize: "cover",
+          height: "100vh",
         }}
       ></div>
       <div className="w-full max-w-md space-y-8">
@@ -71,7 +72,6 @@ function SignIn() {
           <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-white">
             Sign in to your account
           </h2>
-          
         </div>
         <form onSubmit={onSubmit} className="mt-8 space-y-6">
           <input type="hidden" name="remember" defaultValue="true" />
