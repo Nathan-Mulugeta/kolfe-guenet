@@ -12,6 +12,7 @@ import { AiFillEdit } from "react-icons/ai";
 import { BsFacebook } from "react-icons/bs";
 import { AiOutlineCamera } from "react-icons/ai";
 import { updateProfile } from "firebase/auth";
+import CreateStaffMember from "../components/CreateStaffMember.jsx";
 
 function Profile() {
   const [loading, setLoading] = useState(true);
@@ -29,6 +30,7 @@ function Profile() {
     imgUrl: "",
     img: {},
   });
+  const [isAdmin, setIsAdmin] = useState(false);
 
   const {
     id,
@@ -78,6 +80,9 @@ function Profile() {
           facebookLink,
           imgUrl,
         });
+        if (auth.currentUser.uid === "BiNlXxsG9keRM2yRPb7V3Msmwb82")
+          setIsAdmin(true);
+
         setLoading(false);
       } else {
         setLoading(false);
@@ -255,7 +260,7 @@ function Profile() {
           <Spinner />
         </div>
       ) : (
-        <div className="mx-auto w-full px-8">
+        <div className="mx-auto w-full sm:px-8">
           <div className="relative mt-24 flex w-full min-w-0 flex-col break-words rounded-lg bg-white shadow-xl">
             <button
               onClick={() => setEditing(true)}
@@ -560,6 +565,7 @@ function Profile() {
                 </div>
               )}
             </form>
+            {isAdmin && <CreateStaffMember />}
           </div>
         </div>
       )}
