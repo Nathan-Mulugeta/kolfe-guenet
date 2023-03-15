@@ -1,37 +1,32 @@
-import PastorMulu from "./assets/jpg/staff/pastorMulu.jpg";
-import PastorAlex from "./assets/jpg/staff/pastorAlex.jpg";
-import Zerihun from "./assets/jpg/staff/zerihun.jpg";
-import Melis from "./assets/jpg/staff/melis.jpg";
-import Tigistu from "./assets/jpg/staff/tigistu.jpg";
+import { db } from "./firebase.config";
+import { collection, getDocs } from "firebase/firestore";
+import { useEffect, useState } from "react";
+import Spinner from "./components/Spinner";
+import { toast } from "react-toastify";
 
 function Staff() {
-  const people = [
-    {
-      name: "Mulugeta Lemma",
-      role: "Pastor",
-      imageUrl: PastorMulu,
-    },
-    {
-      name: "Alexander",
-      role: "Pastor",
-      imageUrl: PastorAlex,
-    },
-    {
-      name: "Zerihun Demelash",
-      role: "Youth Ministry",
-      imageUrl: Zerihun,
-    },
-    {
-      name: "Tigistu",
-      role: "Evangelist",
-      imageUrl: Tigistu,
-    },
-    {
-      name: "Melis",
-      role: "Evangelist",
-      imageUrl: Melis,
-    },
-  ];
+  const [loading, setLoading] = useState(true);
+  const [people, setPeople] = useState([]);
+
+  const fetchStaffData = async () => {
+    try {
+      const querySnapshot = await getDocs(collection(db, "staffs"));
+      const staffData = querySnapshot.docs.map((doc) => ({
+        name: doc.data().firstName + " " + doc.data().lastName,
+        role: doc.data().position,
+        imgUrl: doc.data().imgUrl,
+      }));
+      setPeople(staffData);
+      setLoading(false);
+    } catch (error) {
+      toast.error("Can't fetch staffs data.");
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchStaffData();
+  }, []);
 
   return (
     <>
@@ -69,14 +64,33 @@ function Staff() {
                 role="list"
                 className="grid gap-x-8 gap-y-12 sm:grid-cols-2 sm:gap-y-16 xl:col-span-2"
               >
+                {loading && (
+                  <span className="place-self-center">
+                    <Spinner />
+                  </span>
+                )}
                 {people.map((person) => (
                   <li key={person.name}>
                     <div className="flex items-center gap-x-6">
-                      <img
-                        className="h-16 w-16 rounded-full"
-                        src={person.imageUrl}
-                        alt=""
-                      />
+                      <div className="grid h-16 w-16 place-items-center overflow-hidden rounded-full bg-gray-500 text-3xl text-white">
+                        {person.imgUrl ? (
+                          <img
+                            src={person.imgUrl}
+                            alt="Profile Picture"
+                            className="h-full w-full object-cover"
+                          />
+                        ) : (
+                          <>
+                            {person.name.split(" ").map((name, index) => {
+                              if (index === 0 || index === 1) {
+                                return name.charAt(0).toUpperCase();
+                              } else {
+                                return "";
+                              }
+                            })}{" "}
+                          </>
+                        )}
+                      </div>
                       <div>
                         <h3 className="text-base font-semibold leading-7 tracking-tight text-gray-900">
                           {person.name}
