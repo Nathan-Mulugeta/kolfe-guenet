@@ -1,6 +1,7 @@
 import { db } from "./firebase.config";
 import { collection, getDocs } from "firebase/firestore";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import Spinner from "./components/Spinner";
 import { toast } from "react-toastify";
 
@@ -15,6 +16,7 @@ function Staff() {
         name: doc.data().firstName + " " + doc.data().lastName,
         role: doc.data().position,
         imgUrl: doc.data().imgUrl,
+        id: doc.data().id,
       }));
       setPeople(staffData);
       setLoading(false);
@@ -72,7 +74,7 @@ function Staff() {
                 {people.map((person) => (
                   <li key={person.name}>
                     <div className="flex items-center gap-x-6">
-                      <div className="grid h-16 w-16 place-items-center overflow-hidden rounded-full bg-gray-500 text-3xl text-white">
+                      <div className="grid h-28 w-28 place-items-center overflow-hidden rounded-3xl bg-gray-500 text-3xl text-white">
                         {person.imgUrl ? (
                           <img
                             src={person.imgUrl}
@@ -92,12 +94,19 @@ function Staff() {
                         )}
                       </div>
                       <div>
+                        <p className="text-lg font-semibold leading-6 text-secondary">
+                          {person.role}
+                        </p>
                         <h3 className="text-base font-semibold leading-7 tracking-tight text-gray-900">
                           {person.name}
                         </h3>
-                        <p className="text-sm font-semibold leading-6 text-indigo-600">
-                          {person.role}
-                        </p>
+                        {/* <Link className="">Visit Profile</Link> */}
+                        <Link
+                          className="text-sm font-medium leading-5 text-indigo-600 transition duration-150 ease-in-out hover:text-indigo-500 focus:underline focus:outline-none"
+                          to={`/profiles/${person.id}`}
+                        >
+                          Visit Profile
+                        </Link>
                       </div>
                     </div>
                   </li>

@@ -11,6 +11,7 @@ import Staff from "./Staff";
 import SignIn from "./pages/SignIn";
 import Profile from "./pages/Profile";
 import PrivateRoute from "./components/PrivateRoute";
+import StaffProfile from "./pages/StaffProfile";
 
 function App() {
   return (
@@ -27,6 +28,8 @@ function App() {
             <Route path="/staff" element={<Staff />} />
             <Route path="/contact-us" element={<ContactUs />} />
             <Route path="/sign-in" element={<SignIn />} />
+            <Route path="/profiles/:profileId" element={<StaffProfile />} />
+
             <Route path="/profile" element={<PrivateRoute />}>
               <Route path="/profile" element={<Profile />} />
             </Route>
