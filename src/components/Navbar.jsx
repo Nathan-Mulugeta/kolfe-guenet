@@ -123,7 +123,7 @@ export default function Navbar() {
                   ) : (
                     <NavLink
                       to="/sign-in"
-                      className={`rounded-full px-4 py-2 text-sm font-semibold  ring-1 hover:bg-black hover:ring-0`}
+                      className={`rounded-full px-4 py-2 text-sm font-semibold  ring-1 ring-secondary hover:bg-secondary hover:text-white hover:ring-0`}
                     >
                       Sign In
                     </NavLink>

@@ -53,6 +53,7 @@ function Form() {
   const onSubmit = async (e) => {
     e.preventDefault();
 
+    // Input data validation
     if (firstName === "") {
       setInvalidInput("firstName");
       toast.error("First Name is required");

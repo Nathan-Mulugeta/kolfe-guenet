@@ -1,5 +1,8 @@
 import { useState } from "react";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import {
+  signInWithEmailAndPassword,
+  sendPasswordResetEmail,
+} from "firebase/auth";
 import { auth } from "../firebase.config";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -45,6 +48,19 @@ function SignIn() {
       setLoading(false);
       toast.error("User does not exist");
     }
+  };
+
+  const handleForgotPassword = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      await sendPasswordResetEmail(auth, email);
+      toast.success("Email was sent");
+    } catch (error) {
+      setLoading(false);
+      toast.error("Could not send reset email");
+    }
+    setLoading(false);
   };
 
   return (
@@ -111,7 +127,7 @@ function SignIn() {
           </div>
 
           <div className="flex items-center justify-between">
-            <div className="flex items-center">
+            {/* <div className="flex items-center">
               <input
                 id="remember-me"
                 name="remember-me"
@@ -124,16 +140,16 @@ function SignIn() {
               >
                 Remember me
               </label>
-            </div>
+            </div> */}
 
-            {/* <div className="text-sm">
-              <a
-                href="#"
-                className="font-medium text-white hover:text-secondary/50"
+            <div className="text-sm">
+              <button
+                onClick={handleForgotPassword}
+                className="font-medium text-white hover:text-black"
               >
                 Forgot your password?
-              </a>
-            </div> */}
+              </button>
+            </div>
           </div>
 
           <div>

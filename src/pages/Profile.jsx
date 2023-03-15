@@ -1,21 +1,16 @@
-import pastorMulu from "../assets/jpg/staff/pastorMulu.jpg";
-import {
-  getStorage,
-  ref,
-  uploadBytesResumable,
-  getDownloadURL,
-} from "firebase/storage";
-import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { serverTimestamp, updateDoc, doc } from "firebase/firestore";
 import { AiOutlinePhone } from "react-icons/ai";
-import { auth, db } from "../firebase.config";
+import { auth, db, storage } from "../firebase.config";
 import { useEffect, useState } from "react";
-import { doc, getDoc } from "firebase/firestore";
+import { getDoc } from "firebase/firestore";
 import { toast } from "react-toastify";
 import Spinner from "../components/Spinner";
 import { FaTelegramPlane } from "react-icons/fa";
 import { AiFillEdit } from "react-icons/ai";
 import { BsFacebook } from "react-icons/bs";
 import { AiOutlineCamera } from "react-icons/ai";
+import { updateProfile } from "firebase/auth";
 
 function Profile() {
   const [loading, setLoading] = useState(true);
@@ -31,6 +26,7 @@ function Profile() {
     bio: "",
     facebookLink: "",
     imgUrl: "",
+    img: {},
   });
 
   const {
@@ -44,6 +40,7 @@ function Profile() {
     bio,
     facebookLink,
     imgUrl,
+    img,
   } = formData;
 
   // Fetch profile data
@@ -93,15 +90,154 @@ function Profile() {
 
   useEffect(() => {
     fetchUserProfile();
-  }, [id]);
+    return () => {
+      if (formData.previewImgUrl) {
+        URL.revokeObjectURL(formData.previewImgUrl);
+      }
+    };
+  }, [id, formData.previewImgUrl]);
+
+  // Handle change
+  const handleChange = (e) => {
+    // For files
+    if (e.target.files) {
+      const file = e.target.files[0];
+      setFormData((prevState) => ({
+        ...prevState,
+        img: file,
+        previewImgUrl: URL.createObjectURL(file),
+      }));
+    }
+
+    // For not files
+    if (!e.target.files) {
+      setFormData((prevState) => ({
+        ...prevState,
+        [e.target.id]: e.target.value,
+      }));
+    }
+  };
 
   // On submit
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
-    // TODO: Updating profile
+    // Data validation
+    // First name and last name are required
+    if (!firstName || !lastName) {
+      toast.error("Please enter your first and last name");
+      return;
+    }
 
+    // Phone number must be 10 or 12 digits
+    if (
+      phone &&
+      !/^(251)?\d{10}$|^(251)?\d{12}$/.test(phone.replace(/\D/g, ""))
+    ) {
+      setLoading(false);
+      toast.error("Please enter a valid phone number");
+      return;
+    }
+
+    // Telegram username must not start with "@"
+    if (telegramUsername && telegramUsername.match(/^@/)) {
+      setLoading(false);
+      toast.error('Please enter your Telegram username without the "@" symbol');
+      return;
+    }
+
+    // Email must be valid
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (email && !emailRegex.test(email)) {
+      setLoading(false);
+      toast.error("Please enter a valid email address");
+      return;
+    }
+
+    // Store image in firebase
+    const storeImage = async (image) => {
+      return new Promise((resolve, reject) => {
+        const fileName = `${auth.currentUser.uid}-${image.name}`;
+
+        const storageRef = ref(storage, "images/" + fileName);
+
+        const uploadTask = uploadBytesResumable(storageRef, image);
+
+        uploadTask.on(
+          "state_changed",
+          (snapshot) => {
+            const progress =
+              (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            console.log("Upload is " + progress + "% done");
+            switch (snapshot.state) {
+              case "paused":
+                console.log("Upload is paused");
+                break;
+              case "running":
+                console.log("Upload is running");
+                break;
+              default:
+                break;
+            }
+          },
+          (error) => {
+            reject(error);
+          },
+          () => {
+            // Handle successful uploads on complete
+            // For instance, get the download URL: https://firebasestorage.googleapis.com/...
+            getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+              resolve(downloadURL);
+            });
+          }
+        );
+      });
+    };
+
+    const downloadURL = await storeImage(img).catch(() => {
+      setLoading(false);
+      toast.error("Images not uploaded");
+      return;
+    });
+
+    // Update user profile
+
+    // Filter out invalid values
+    const formDataCopy = Object.fromEntries(
+      Object.entries(formData).filter(([key, value]) => {
+        return value !== undefined && value !== "" && value !== null;
+      })
+    );
+
+    // Clear the data to be submitted and set the imgUrl
+    formDataCopy.imgUrl = downloadURL;
+    formDataCopy.timeStamp = serverTimestamp();
+    delete formDataCopy.img;
+    delete formDataCopy.previewImgUrl;
+
+    // Revoke the previewImgUrl to clear memory
+    if (formData.previewImgUrl) {
+      URL.revokeObjectURL(formData.previewImgUrl);
+    }
+    delete formData.previewImgUrl;
+
+    // Update in firestore staff collection
+    try {
+      await updateDoc(userRef, formDataCopy);
+      updateProfile(auth.currentUser, {
+        displayName: formDataCopy.firstName + " " + formDataCopy.lastName,
+        photoURL: formDataCopy.imgUrl,
+      });
+    } catch (error) {
+      setLoading(false);
+      toast.error("Can not update profile.");
+      console.log(error);
+    }
+
+    setLoading(false);
     setEditing(false);
+    toast.success("Profile updated successfully.");
   };
 
   return (
@@ -141,24 +277,35 @@ function Profile() {
                 {editing ? (
                   <div className="flex justify-center">
                     <input
-                      id="profile-picture"
+                      id="imgUrl"
                       type="file"
-                      accept="image/*"
+                      accept=".jpg,.png,.jpeg"
+                      max="1"
                       className="hidden"
-                      // TODO: handle file input
+                      onChange={handleChange}
                     />
-                    <label htmlFor="profile-picture" className="relative">
-                      <div className="relative -mt-16 grid h-[150px] w-[150px] cursor-pointer place-items-center overflow-hidden rounded-3xl bg-gray-400 p-4 text-6xl text-white shadow-xl">
-                        {imgUrl ? (
+                    <label htmlFor="imgUrl" className="relative">
+                      <div className="relative -mt-16 grid h-[150px] w-[150px] cursor-pointer place-items-center overflow-hidden rounded-3xl bg-gray-400 text-6xl text-white shadow-xl">
+                        {formData.previewImgUrl ? (
                           <img
-                            alt="..."
-                            src={pastorMulu}
+                            src={formData.previewImgUrl}
+                            alt="Preview"
                             className="h-full w-full object-cover"
                           />
                         ) : (
                           <>
-                            {firstName.charAt(0)}
-                            {lastName.charAt(0)}
+                            {imgUrl ? (
+                              <img
+                                src={imgUrl}
+                                alt="Preview"
+                                className="h-full w-full object-cover"
+                              />
+                            ) : (
+                              <>
+                                {firstName.charAt(0)}
+                                {lastName.charAt(0)}
+                              </>
+                            )}
                           </>
                         )}
 
@@ -176,7 +323,7 @@ function Profile() {
                           {imgUrl ? (
                             <img
                               alt="..."
-                              src={pastorMulu}
+                              src={imgUrl}
                               className="h-full w-full object-cover"
                             />
                           ) : (
@@ -210,7 +357,7 @@ function Profile() {
                           id="firstName"
                           className="text-blueGray-700 rounded-md border border-gray-300 p-2 text-xl font-semibold leading-normal focus:outline-none focus:ring-2 focus:ring-blue-500"
                           value={firstName}
-                          // onChange={(e) => setFirstName(e.target.value)}
+                          onChange={handleChange}
                         />
                       </div>
                       <div className="mb-2">
@@ -224,7 +371,7 @@ function Profile() {
                           id="lastName"
                           className="text-blueGray-700 rounded-md border border-gray-300 p-2 text-xl font-semibold leading-normal focus:outline-none focus:ring-2 focus:ring-blue-500"
                           value={lastName}
-                          // onChange={(e) => setLastName(e.target.value)}
+                          onChange={handleChange}
                         />
                       </div>
                     </div>
@@ -247,7 +394,7 @@ function Profile() {
                         className="text-blueGray-600 rounded-md border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                         value={phone}
                         id="phone"
-                        // onChange={(e) => setPhone(e.target.value)}
+                        onChange={handleChange}
                       />
                     </div>
                   ) : (
@@ -285,7 +432,7 @@ function Profile() {
                           id="telegramUsername"
                           className="text-blueGray-600 rounded-md border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                           value={telegramUsername}
-                          // onChange={(e) => setTelegramUsername(e.target.value)}
+                          onChange={handleChange}
                         />
                       </div>
                     ) : (
@@ -318,7 +465,7 @@ function Profile() {
                           id="facebookLink"
                           className="text-blueGray-600 rounded-md border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                           value={facebookLink}
-                          // onChange={(e) => setTelegramUsername(e.target.value)}
+                          onChange={handleChange}
                         />
                       </div>
                     ) : (
@@ -351,7 +498,7 @@ function Profile() {
                           id="email"
                           className="text-blueGray-600 rounded-md border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                           value={email}
-                          // onChange={(e) => setTelegramUsername(e.target.value)}
+                          onChange={handleChange}
                         />
                       </div>
                     ) : (
@@ -373,24 +520,44 @@ function Profile() {
                     )}
                   </div>
                 </div>
+                {/* Bio */}
                 <div className="border-blueGray-200 mt-5 border-t py-10 text-center">
                   <div className="flex justify-center">
                     <div className="w-full px-4 lg:w-9/12">
-                      <p className="text-blueGray-700 mb-4 text-base leading-relaxed sm:text-xl">
-                        {bio ?? "No bio yet"}
-                      </p>
+                      {editing ? (
+                        <div className="mb-2">
+                          <label
+                            htmlFor="bio"
+                            className="mb-2 block text-sm font-medium text-gray-700"
+                          >
+                            Bio
+                          </label>
+                          <textarea
+                            id="bio"
+                            className="text-blueGray-700 rounded-md border border-gray-300 p-2 text-xl font-semibold leading-normal focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            value={bio}
+                            onChange={handleChange}
+                          />
+                        </div>
+                      ) : (
+                        <p className="text-blueGray-700 mb-4 text-base leading-relaxed sm:text-xl">
+                          {bio ?? "No bio yet"}
+                        </p>
+                      )}
                     </div>
                   </div>
                 </div>
               </div>
-              <div className="mb-4 grid place-items-center">
-                <button
-                  className="btn-secondary btn w-1/2 font-bold text-white"
-                  type="submit"
-                >
-                  Save
-                </button>
-              </div>
+              {editing && (
+                <div className="mb-4 grid place-items-center">
+                  <button
+                    className="btn-secondary btn w-1/2 font-bold text-white"
+                    type="submit"
+                  >
+                    Save
+                  </button>
+                </div>
+              )}
             </form>
           </div>
         </div>
