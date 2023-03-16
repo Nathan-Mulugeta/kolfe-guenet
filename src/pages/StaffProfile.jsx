@@ -223,7 +223,7 @@ function StaffProfile() {
                 <div className="flex justify-center">
                   <div className="w-full px-4 lg:w-9/12">
                     <p className="text-blueGray-700 mb-4 text-base leading-relaxed sm:text-xl">
-                      {bio === "" && "No bio yet"}
+                      {bio === "" ? "No bio yet" : bio}
                     </p>
                   </div>
                 </div>

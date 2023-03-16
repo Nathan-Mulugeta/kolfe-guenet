@@ -72,9 +72,8 @@ function SignIn() {
         </div>
       )}
       <div
-        className="fixed inset-0 -z-10"
+        className="fixed inset-0 -z-10 bg-gradient-to-b from-[#304D89] to-[#30AFBE]"
         style={{
-          backgroundImage: `url(${signInBackground})`,
           backgroundRepeat: "no-repeat",
           backgroundSize: "cover",
           height: "100vh",

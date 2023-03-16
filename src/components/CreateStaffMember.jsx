@@ -34,7 +34,7 @@ function CreateStaffMember({ setLoading, setModalOpen }) {
 
       const user = userCredential.user;
 
-      updateProfile(auth.currentUser, {
+      updateProfile(user, {
         displayName: firstName + " " + lastName,
       });
 
@@ -71,7 +71,7 @@ function CreateStaffMember({ setLoading, setModalOpen }) {
             <input
               onChange={onChange}
               value={firstName}
-              className="w-full rounded-lg border border-gray-400 p-3 transition duration-300 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="w-full rounded-lg border border-gray-400 p-3 transition duration-300 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-secondary"
               type="text"
               id="firstName"
               name="firstName"
@@ -89,7 +89,7 @@ function CreateStaffMember({ setLoading, setModalOpen }) {
             <input
               onChange={onChange}
               value={lastName}
-              className="w-full rounded-lg border border-gray-400 p-3 transition duration-300 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="w-full rounded-lg border border-gray-400 p-3 transition duration-300 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-secondary"
               type="text"
               id="lastName"
               name="lastName"
@@ -107,7 +107,7 @@ function CreateStaffMember({ setLoading, setModalOpen }) {
             <input
               onChange={onChange}
               value={email}
-              className="w-full rounded-lg border border-gray-400 p-3 transition duration-300 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="w-full rounded-lg border border-gray-400 p-3 transition duration-300 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-secondary"
               type="email"
               id="email"
               name="email"
@@ -125,7 +125,7 @@ function CreateStaffMember({ setLoading, setModalOpen }) {
             <input
               onChange={onChange}
               value={password}
-              className="w-full rounded-lg border border-gray-400 p-3 transition duration-300 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="w-full rounded-lg border border-gray-400 p-3 transition duration-300 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-secondary"
               type="password"
               id="password"
               name="password"
@@ -135,7 +135,7 @@ function CreateStaffMember({ setLoading, setModalOpen }) {
           </div>
           <div>
             <button
-              className="w-full rounded-lg bg-green-500 py-3 px-4 text-white transition duration-300 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
+              className="w-full rounded-lg bg-secondary py-3 px-4 text-white transition duration-300 hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-opacity-50"
               type="submit"
             >
               Create Account

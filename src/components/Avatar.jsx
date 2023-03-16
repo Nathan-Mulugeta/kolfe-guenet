@@ -3,6 +3,7 @@ import { Fragment, useEffect, useState } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { auth, db } from "../firebase.config";
 import { getDoc, doc } from "firebase/firestore";
+import { onAuthStateChanged } from "firebase/auth";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
