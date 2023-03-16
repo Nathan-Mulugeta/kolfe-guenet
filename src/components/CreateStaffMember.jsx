@@ -38,7 +38,7 @@ function CreateStaffMember({ setLoading, setModalOpen }) {
         displayName: firstName + " " + lastName,
       });
 
-      const formDataCopy = { ...formData };
+      const formDataCopy = { ...formData, id: user.uid };
       delete formDataCopy.password;
       formDataCopy.timestamp = serverTimestamp();
 
