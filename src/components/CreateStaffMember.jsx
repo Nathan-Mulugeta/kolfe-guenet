@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import { auth, db } from "../firebase.config";
 import { setDoc, doc, serverTimestamp } from "firebase/firestore";
 
-function CreateStaffMember() {
+function CreateStaffMember({ setLoading, setModalOpen }) {
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -23,6 +23,7 @@ function CreateStaffMember() {
 
   const onSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
     try {
       const userCredential = await createUserWithEmailAndPassword(
@@ -42,10 +43,15 @@ function CreateStaffMember() {
       formDataCopy.timestamp = serverTimestamp();
 
       await setDoc(doc(db, "staffs", user.uid), formDataCopy);
-      await auth.signOut();
     } catch (error) {
-      toast.error("Something went wrong with staff member creation.");
+      setLoading(false);
+      toast.error(
+        "Something went wrong. Can't create a new staff member at the moment."
+      );
+      console.log(error);
     }
+    setLoading(false);
+    setModalOpen(true);
   };
 
   return (

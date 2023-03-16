@@ -3,7 +3,7 @@ import { serverTimestamp, updateDoc, doc } from "firebase/firestore";
 
 import { AiOutlinePhone } from "react-icons/ai";
 import { auth, db, storage } from "../firebase.config";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Fragment } from "react";
 import { getDoc } from "firebase/firestore";
 import { toast } from "react-toastify";
 import Spinner from "../components/Spinner";
@@ -13,12 +13,14 @@ import { BsFacebook } from "react-icons/bs";
 import { AiOutlineCamera } from "react-icons/ai";
 import { updateProfile } from "firebase/auth";
 import CreateStaffMember from "../components/CreateStaffMember.jsx";
+import { Dialog, Transition } from "@headlessui/react";
+import { AiOutlineInfoCircle } from "react-icons/ai";
+import { useNavigate } from "react-router-dom";
 
 function Profile() {
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState(false);
   const [formData, setFormData] = useState({
-    id: auth.currentUser.uid,
     firstName: "",
     lastName: "",
     email: "",
@@ -31,9 +33,9 @@ function Profile() {
     img: {},
   });
   const [isAdmin, setIsAdmin] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
 
   const {
-    id,
     firstName,
     lastName,
     email,
@@ -49,7 +51,9 @@ function Profile() {
   // Fetch profile data
 
   // Create a reference to the user's profile document in Firestore
-  const userRef = doc(db, "staffs", id);
+  const userRef = doc(db, "staffs", auth.currentUser.uid);
+
+  const navigate = useNavigate();
 
   // Fetch the profile data
   const fetchUserProfile = async () => {
@@ -91,17 +95,17 @@ function Profile() {
     } catch (error) {
       setLoading(false);
       toast.error("Error fetching profile data");
+      navigate("/");
     }
   };
 
   useEffect(() => {
     fetchUserProfile();
     return () => {
-      if (formData.previewImgUrl) {
-        URL.revokeObjectURL(formData.previewImgUrl);
-      }
+      URL.revokeObjectURL(formData.previewImgUrl);
     };
-  }, [id, formData.previewImgUrl]);
+    // eslint-disable-next-line
+  }, [formData.previewImgUrl, auth.currentUser]);
 
   // Handle change
   const handleChange = (e) => {
@@ -137,11 +141,9 @@ function Profile() {
     }
 
     // Phone number must be 10 or 12 digits
-    if (
-      phone &&
-      !/^(251)?\d{10}$|^(251)?\d{12}$/.test(phone.replace(/\D/g, ""))
-    ) {
-      setLoading(false);
+    const phoneRegex = /^(?=.{10,12}$)(0|\+251|251)(9\d|\d{9})$/;
+
+    if (!phoneRegex.test(phone)) {
       toast.error("Please enter a valid phone number");
       return;
     }
@@ -220,12 +222,11 @@ function Profile() {
     formDataCopy.imgUrl = downloadURL;
     formDataCopy.timeStamp = serverTimestamp();
     delete formDataCopy.img;
+    URL.revokeObjectURL(formDataCopy.previewImgUrl);
     delete formDataCopy.previewImgUrl;
 
     // Revoke the previewImgUrl to clear memory
-    if (formData.previewImgUrl) {
-      URL.revokeObjectURL(formData.previewImgUrl);
-    }
+    URL.revokeObjectURL(formData.previewImgUrl);
     delete formData.previewImgUrl;
 
     // Update in firestore staff collection
@@ -245,6 +246,78 @@ function Profile() {
     setEditing(false);
     toast.success("Profile updated successfully.");
   };
+
+  if (modalOpen) {
+    return (
+      <Transition.Root show={modalOpen} as={Fragment}>
+        <Dialog
+          as="div"
+          className="relative z-10"
+          onClose={() => setModalOpen(false)}
+        >
+          <Transition.Child
+            as={Fragment}
+            enter="ease-out duration-300"
+            enterFrom="opacity-0"
+            enterTo="opacity-100"
+            leave="ease-in duration-200"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
+          >
+            <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+          </Transition.Child>
+
+          <div className="fixed inset-0 z-10 overflow-y-auto">
+            <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+              <Transition.Child
+                as={Fragment}
+                enter="ease-out duration-300"
+                enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                enterTo="opacity-100 translate-y-0 sm:scale-100"
+                leave="ease-in duration-200"
+                leaveFrom="opacity-100 translate-y-0 sm:scale-100"
+                leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+              >
+                <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+                  <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                    <div className="sm:flex sm:items-start">
+                      <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-green-100 sm:mx-0 sm:h-10 sm:w-10">
+                        <AiOutlineInfoCircle className="text-green-600" />
+                      </div>
+                      <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                        <Dialog.Title
+                          as="h3"
+                          className="text-base font-semibold leading-6 text-gray-900"
+                        >
+                          You are signed in
+                        </Dialog.Title>
+                        <div className="mt-2">
+                          <p className="text-sm text-gray-500">
+                            You are now in the newly created staff member
+                            profile page. You can edit, add profile picture, add
+                            phone number and etc in this page.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+                    <button
+                      type="button"
+                      className="inline-flex w-full justify-center rounded-md bg-green-100 px-3 py-2 text-sm font-semibold text-green-600 shadow-sm hover:bg-green-600 hover:text-white sm:ml-3 sm:w-auto"
+                      onClick={() => setModalOpen(false)}
+                    >
+                      Okay
+                    </button>
+                  </div>
+                </Dialog.Panel>
+              </Transition.Child>
+            </div>
+          </div>
+        </Dialog>
+      </Transition.Root>
+    );
+  }
 
   return (
     <section
@@ -565,7 +638,12 @@ function Profile() {
                 </div>
               )}
             </form>
-            {isAdmin && <CreateStaffMember />}
+            {isAdmin && (
+              <CreateStaffMember
+                setLoading={setLoading}
+                setModalOpen={setModalOpen}
+              />
+            )}
           </div>
         </div>
       )}

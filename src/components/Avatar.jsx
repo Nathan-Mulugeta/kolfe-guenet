@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Fragment } from "react";
+import { Fragment, useEffect } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { auth } from "../firebase.config";
 
@@ -8,6 +8,8 @@ function classNames(...classes) {
 }
 
 function Avatar({ handleSignOut }) {
+  useEffect(() => {}, [auth.currentUser]);
+
   return (
     <Menu as="div" className="relative ml-3">
       <div>
