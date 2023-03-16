@@ -43,6 +43,8 @@ function CreateStaffMember({ setLoading, setModalOpen }) {
       formDataCopy.timestamp = serverTimestamp();
 
       await setDoc(doc(db, "staffs", user.uid), formDataCopy);
+      setLoading(false);
+      setModalOpen(true);
     } catch (error) {
       setLoading(false);
       toast.error(
@@ -50,8 +52,6 @@ function CreateStaffMember({ setLoading, setModalOpen }) {
       );
       console.log(error);
     }
-    setLoading(false);
-    setModalOpen(true);
   };
 
   return (

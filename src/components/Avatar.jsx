@@ -1,23 +1,53 @@
 import { Link } from "react-router-dom";
-import { Fragment, useEffect } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Menu, Transition } from "@headlessui/react";
-import { auth } from "../firebase.config";
+import { auth, db } from "../firebase.config";
+import { getDoc, doc } from "firebase/firestore";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
 function Avatar({ handleSignOut }) {
-  useEffect(() => {}, [auth.currentUser]);
+  const [data, setData] = useState({
+    displayName: "",
+    photoURL: "",
+  });
+
+  const { displayName, photoURL } = data;
+
+  const userRef = doc(db, "staffs", auth.currentUser.uid);
+
+  const fetchProfileData = async () => {
+    try {
+      const docSnap = await getDoc(userRef);
+      if (docSnap.exists()) {
+        const { firstName, lastName, imgUrl } = docSnap.data();
+        // Update the form data state with the fetched profile data
+        setData({
+          ...data,
+          displayName: firstName + " " + lastName,
+          photoURL: imgUrl,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchProfileData();
+    // eslint-disable-next-line
+  }, [data]);
 
   return (
     <Menu as="div" className="relative ml-3">
       <div>
         <Menu.Button className="grid h-8 w-8 place-items-center overflow-hidden rounded-full bg-gray-400 text-sm text-white focus:outline-none focus:ring-2 focus:ring-secondary">
           <span className="sr-only">Open user menu</span>
-          {!auth.currentUser.photoURL && auth.currentUser.displayName && (
+          {!photoURL && displayName && (
             <>
-              {auth.currentUser.displayName.split(" ").map((name, index) => {
+              {displayName.split(" ").map((name, index) => {
                 if (index === 0 || index === 1) {
                   return name.charAt(0).toUpperCase();
                 } else {
@@ -27,12 +57,8 @@ function Avatar({ handleSignOut }) {
             </>
           )}
 
-          {auth.currentUser.photoURL && (
-            <img
-              className="object-cover"
-              src={auth.currentUser.photoURL}
-              alt="Profile pic"
-            />
+          {photoURL && (
+            <img className="object-cover" src={photoURL} alt="Profile pic" />
           )}
         </Menu.Button>
       </div>

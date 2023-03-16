@@ -145,7 +145,7 @@ export default function Navbar() {
                 <div className="absolute w-screen flex-auto overflow-hidden rounded-b-3xl bg-white text-sm leading-6 ring-1 ring-gray-900/5">
                   <div className="space-y-1 p-4">
                     {navigation.map((item) => (
-                      <Menu.Item>
+                      <Menu.Item key={item.name}>
                         <NavLink
                           key={item.name}
                           to={item.to}
