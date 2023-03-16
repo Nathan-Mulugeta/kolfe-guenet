@@ -23,6 +23,7 @@ export default function Navbar() {
     { name: "Our Belief", to: "/our-belief" },
     { name: "Staff", to: "/staff" },
     { name: "Contact Us", to: "/contact-us" },
+    ...(signedIn ? [{ name: "Members", to: "/members" }] : []),
   ].map((item) => ({
     ...item,
     current: location.pathname === item.to,

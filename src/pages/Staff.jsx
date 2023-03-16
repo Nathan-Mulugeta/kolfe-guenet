@@ -1,8 +1,8 @@
-import { db } from "./firebase.config";
+import { db } from "../firebase.config";
 import { collection, getDocs } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import Spinner from "./components/Spinner";
+import Spinner from "../components/Spinner";
 import { toast } from "react-toastify";
 
 function Staff() {

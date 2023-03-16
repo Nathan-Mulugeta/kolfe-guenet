@@ -9,11 +9,12 @@ import { FaTelegramPlane } from "react-icons/fa";
 import { AiFillEdit } from "react-icons/ai";
 import { BsFacebook } from "react-icons/bs";
 import { AiOutlineCamera } from "react-icons/ai";
-import { updateProfile } from "firebase/auth";
+import { onAuthStateChanged, updateProfile } from "firebase/auth";
 import CreateStaffMember from "../components/CreateStaffMember.jsx";
 import { Dialog, Transition } from "@headlessui/react";
 import { AiOutlineInfoCircle } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
+import MembersInput from "../components/MembersInput";
 
 function Profile() {
   const [loading, setLoading] = useState(true);
@@ -44,6 +45,7 @@ function Profile() {
     imgUrl,
     img,
   } = formData;
+  const [uid, setUid] = useState(null);
 
   // Fetch profile data
 
@@ -96,11 +98,27 @@ function Profile() {
 
   useEffect(() => {
     fetchUserProfile();
+
     return () => {
       URL.revokeObjectURL(formData.previewImgUrl);
     };
     // eslint-disable-next-line
   }, [formData.previewImgUrl, auth.currentUser]);
+
+  // Add state listener
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // If the user is logged in, set the `uid` state to the user's UID
+        setUid(user.uid);
+      } else {
+        // If the user is logged out, set the `uid` state to `null`
+        setUid(null);
+      }
+    });
+
+    return unsubscribe;
+  }, []);
 
   // Handle change
   const handleChange = (e) => {
@@ -654,11 +672,14 @@ function Profile() {
                   </div>
                 )}
               </form>
-              {auth.currentUser.uid === "BiNlXxsG9keRM2yRPb7V3Msmwb82" && (
-                <CreateStaffMember
-                  setLoading={setLoading}
-                  setModalOpen={setModalOpen}
-                />
+              {uid === "BiNlXxsG9keRM2yRPb7V3Msmwb82" && (
+                <>
+                  <CreateStaffMember
+                    setLoading={setLoading}
+                    setModalOpen={setModalOpen}
+                  />
+                  <MembersInput setLoading={setLoading} />
+                </>
               )}
             </div>
           )}
