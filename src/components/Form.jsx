@@ -155,7 +155,7 @@ function Form() {
       !formDataCopy.interest && delete formDataCopy.interest;
       !formDataCopy.message && delete formDataCopy.message;
 
-      const docRef = await addDoc(collection(db, "members"), formDataCopy);
+      const docRef = await addDoc(collection(db, "newMembers"), formDataCopy);
 
       // get the data from server
       const docSnap = await getDoc(docRef);

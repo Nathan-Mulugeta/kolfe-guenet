@@ -1,16 +1,198 @@
 import { useState } from "react";
+import {
+  collection,
+  addDoc,
+  setDoc,
+  doc,
+  getDoc,
+  writeBatch,
+  getCountFromServer,
+} from "firebase/firestore";
+import { db } from "../firebase.config";
+import * as XLSX from "xlsx";
 import { RiFileExcel2Line } from "react-icons/ri";
+import { toast } from "react-toastify";
+
+const propertyMap = {
+  ID: "id",
+  "First Name": "firstName",
+  "Last Name": "lastName",
+  Gender: "gender",
+  Age: "age",
+  "Marital Status": "maritalStatus",
+  "Date of Marriage": "dateOfMarriage",
+  Accadamics: "academics",
+  "Married to": "marriedTo",
+  "Number of Childern": "numberOfChildren",
+  "Date of birth": "dateOfBirth",
+  Country: "country",
+  City: "city",
+  "Kifle-Ketema": "kifleKetema",
+  Woreda: "woreda",
+  HouseNumber: "houseNumber",
+  MPhone: "mPhone",
+  Email: "email",
+  FirstLanguage: "firstLanguage",
+  "Salvation Date": "salvationDate",
+  "Date of Membership": "dateOfMembership",
+  ChurchService: "churchService",
+  "Proffesion/Work": "work",
+  RenewalYear: "renewalYear",
+  "back- slider": "backSlider",
+  Deceased: "deceased",
+  "CHURCH-CHANGE": "churchChange",
+  "where they live": "whereTheyLive",
+};
 
 function MembersInput({ setLoading }) {
-  const [fileName, setFileName] = useState("");
+  const [file, setFile] = useState(null);
 
-  const handleFileInputChange = (event) => {
-    const files = event.target.files;
-    const file = files[0];
-    setFileName(file.name);
-    // TODO: handle the file and add the members to the system
+  //   Handle submit
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    const members = await handleExcelFile(file);
+
+    try {
+      const existingMembers = [];
+      const newMembersToAdd = [];
+      for (const member of members) {
+        const memberRef = doc(db, "oldMembers", member.id.toString());
+        const docSnapshot = await getDoc(memberRef);
+        if (docSnapshot.exists()) {
+          existingMembers.push(member.id);
+        } else {
+          newMembersToAdd.push(member);
+        }
+      }
+
+      // Add the new members to the collection in batches of 500
+      if (newMembersToAdd.length > 0) {
+        const chunkedMembers = [];
+        for (let i = 0; i < newMembersToAdd.length; i += 500) {
+          const chunk = newMembersToAdd.slice(i, i + 500);
+          chunkedMembers.push(chunk);
+        }
+
+        for (const chunk of chunkedMembers) {
+          const batch = writeBatch(db);
+          for (const member of chunk) {
+            const memberCopy = Object.fromEntries(
+              Object.entries(member).filter(
+                ([key, value]) => value !== undefined
+              )
+            );
+            const memberDocRef = doc(
+              db,
+              "oldMembers",
+              memberCopy.id.toString()
+            );
+            batch.set(memberDocRef, memberCopy);
+          }
+          await batch.commit();
+        }
+        toast.success(
+          `${newMembersToAdd.length} members added to the database successfully!`
+        );
+      } else {
+        toast.info("No new members added to the database.");
+      }
+
+      // Log the existing members (if any)
+      if (existingMembers.length > 0) {
+        toast.info(
+          `The following members id already exists in the database: ${existingMembers.join(
+            ", "
+          )}`
+        );
+      }
+
+      setLoading(false);
+    } catch (error) {
+      toast.error("Can't add members right now!");
+      console.log(error);
+    }
   };
 
+  //   Accept the excel file from input whether on select or on drag and drop
+  const handleFileInputChange = (event) => {
+    setFile(event.target.files[0]);
+  };
+
+  const handleDrop = (event) => {
+    event.preventDefault();
+    setFile(event.dataTransfer.files[0]);
+  };
+
+  //   Handle the excel file to change it into json
+  const handleExcelFile = async (file) => {
+    const fileName = file.name;
+    const fileExtension = fileName.slice(fileName.lastIndexOf(".") + 1);
+    if (fileExtension !== "xls" && fileExtension !== "xlsx") {
+      toast.error("Please drop an Excel file.");
+      return null;
+    }
+
+    try {
+      const workbook = await readExcelFile(file);
+      const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+      const data = XLSX.utils.sheet_to_json(worksheet);
+
+      //   Change the key value pair to have a proper json keys
+      const modifiedData = data.map((item) => {
+        const newItem = {};
+        for (const [oldKey, newKey] of Object.entries(propertyMap)) {
+          if (
+            [
+              "Date of birth",
+              "Date of Marriage",
+              "Date of Membership",
+            ].includes(oldKey)
+          ) {
+            // Check if the date value is not undefined
+            if (item[oldKey]) {
+              // Convert the date value to a JavaScript date object
+              const date = new Date(
+                (item[oldKey] - (25567 + 2)) * 86400 * 1000
+              );
+              // Format the date as a string in a human-readable format (e.g. "MM/DD/YYYY")
+              newItem[newKey] = `${
+                date.getMonth() + 1
+              }/${date.getDate()}/${date.getFullYear()}`;
+            } else {
+              newItem[newKey] = item[oldKey];
+            }
+          } else {
+            newItem[newKey] = item[oldKey];
+          }
+        }
+        return newItem;
+      });
+
+      return modifiedData;
+    } catch (error) {
+      setLoading(false);
+      toast.error("Something went wrong parsing the excel file.");
+      console.log(error);
+    }
+  };
+
+  //   Use XLSX library to change the excel file into json
+  const readExcelFile = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const workbook = XLSX.read(event.target.result, { type: "binary" });
+        resolve(workbook);
+      };
+      reader.onerror = (event) => {
+        reject(event);
+      };
+      reader.readAsBinaryString(file);
+    });
+  };
+
+  // Prevent default behaviours
   const handleDragOver = (event) => {
     event.preventDefault();
   };
@@ -23,65 +205,68 @@ function MembersInput({ setLoading }) {
     event.preventDefault();
   };
 
-  const handleDrop = (event) => {
-    event.preventDefault();
-    const files = event.dataTransfer.files;
-    const file = files[0];
-    setFileName(file.name);
-    // TODO: handle the file and add the members to the system
-  };
-
   return (
     <>
-      <div className="rounded-md bg-white p-4 shadow-md">
-        <label
-          htmlFor="excel-file-input"
-          className="mb-2 block cursor-pointer text-2xl font-bold text-secondary"
-        >
-          Add Members from an Excel file
-        </label>
-        <div className="flex">
-          <div
-            className={`flex h-48 cursor-pointer items-center justify-center rounded-md border-2 border-dashed  transition-all duration-300 hover:border-secondary sm:w-full ${
-              fileName ? "border-[#1C6C40]" : "border-gray-400"
-            }`}
-            onDragOver={handleDragOver}
-            onDragEnter={handleDragEnter}
-            onDragLeave={handleDragLeave}
-            onDrop={handleDrop}
+      <form onSubmit={onSubmit}>
+        <div className="flex flex-col gap-3 rounded-md bg-white p-4 shadow-md">
+          <label
+            htmlFor="excel-file-input"
+            className="mb-2 block cursor-pointer text-xl font-bold text-secondary sm:text-2xl"
           >
-            <label
-              htmlFor="excel-file-input"
-              className="flex h-full w-full items-center justify-center"
+            Add Members from an Excel file
+          </label>
+          <div className="flex">
+            <div
+              className={`flex h-48 w-full cursor-pointer items-center justify-center rounded-md border-2  border-dashed transition-all duration-300 hover:border-secondary ${
+                file ? "border-[#1C6C40]" : "border-gray-400"
+              }`}
+              onDragOver={handleDragOver}
+              onDragEnter={handleDragEnter}
+              onDragLeave={handleDragLeave}
+              onDrop={handleDrop}
             >
-              <div className="flex cursor-pointer items-center justify-center">
-                <RiFileExcel2Line
-                  className={`text-6xl ${
-                    fileName ? "text-[#1C6C40]" : "text-gray-400"
-                  }`}
-                />
-                <div className="ml-4 text-center">
-                  <div className="text-lg font-medium text-gray-900">
-                    {fileName ? fileName : "Select a file"}
-                  </div>
-                  {!fileName && (
-                    <div className="text-sm text-gray-500">
-                      Drag and drop file here, or click to browse
+              <label
+                htmlFor="excel-file-input"
+                className="flex h-full w-full items-center justify-center"
+              >
+                <div className="flex cursor-pointer items-center justify-center">
+                  <RiFileExcel2Line
+                    className={`text-6xl ${
+                      file ? "text-[#1C6C40]" : "text-gray-400"
+                    }`}
+                  />
+                  <div className="ml-4 text-center">
+                    <div className="text-lg font-medium text-gray-900">
+                      {file ? file.name : "Select a file"}
                     </div>
-                  )}
+                    {!file && (
+                      <div className="text-sm text-gray-500">
+                        Drag and drop file here, or click to browse
+                      </div>
+                    )}
+                  </div>
                 </div>
-              </div>
-            </label>
-            <input
-              type="file"
-              id="excel-file-input"
-              //   accept=".xlsx, .xls"
-              onChange={handleFileInputChange}
-              className="sr-only"
-            />
+              </label>
+              <input
+                type="file"
+                id="excel-file-input"
+                accept=".xlsx, .xls"
+                onChange={handleFileInputChange}
+                className="sr-only"
+              />
+            </div>
+          </div>
+          <div className="flex justify-end">
+            <button
+              disabled={file === null}
+              type="submit"
+              className="btn-secondary btn text-white active:scale-95"
+            >
+              Submit
+            </button>
           </div>
         </div>
-      </div>
+      </form>
     </>
   );
 }
