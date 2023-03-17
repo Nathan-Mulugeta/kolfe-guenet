@@ -1,58 +1,85 @@
 import { useState } from "react";
+import { RiFileExcel2Line } from "react-icons/ri";
 
 function MembersInput({ setLoading }) {
   const [fileName, setFileName] = useState("");
 
   const handleFileInputChange = (event) => {
-    const file = event.target.files[0];
+    const files = event.target.files;
+    const file = files[0];
+    setFileName(file.name);
+    // TODO: handle the file and add the members to the system
+  };
+
+  const handleDragOver = (event) => {
+    event.preventDefault();
+  };
+
+  const handleDragEnter = (event) => {
+    event.preventDefault();
+  };
+
+  const handleDragLeave = (event) => {
+    event.preventDefault();
+  };
+
+  const handleDrop = (event) => {
+    event.preventDefault();
+    const files = event.dataTransfer.files;
+    const file = files[0];
     setFileName(file.name);
     // TODO: handle the file and add the members to the system
   };
 
   return (
     <>
-      <div className="rounded-md bg-gray-100 p-4">
+      <div className="rounded-md bg-white p-4 shadow-md">
         <label
           htmlFor="excel-file-input"
-          className="block text-xl font-semibold text-gray-700"
+          className="mb-2 block cursor-pointer text-2xl font-bold text-secondary"
         >
-          Add Members from an excel file
+          Add Members from an Excel file
         </label>
-        <div className="mt-1 flex items-center justify-center">
-          <div className="relative w-full max-w-xs rounded-md border-2 border-dashed border-gray-400 p-4">
-            <label htmlFor="excel-file-input">
-              <div className="flex items-center justify-center">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-10 w-10 text-gray-400"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M7.145 2.97a2.5 2.5 0 013.544 0l4.328 4.328a2.5 2.5 0 010 3.544l-2.17 2.17v3.95a2.5 2.5 0 01-2.5 2.5h-5.5a2.5 2.5 0 01-2.5-2.5v-11a2.5 2.5 0 012.5-2.5h2.95zm2.293 1.207a1.5 1.5 0 00-2.122 0l-4.328 4.328a1.5 1.5 0 000 2.122l2.17 2.17v3.683h3.683l2.17-2.17a1.5 1.5 0 000-2.122l-4.328-4.328z"
-                    clipRule="evenodd"
-                  />
-                </svg>
+        <div className="flex">
+          <div
+            className={`flex h-48 cursor-pointer items-center justify-center rounded-md border-2 border-dashed  transition-all duration-300 hover:border-secondary sm:w-full ${
+              fileName ? "border-[#1C6C40]" : "border-gray-400"
+            }`}
+            onDragOver={handleDragOver}
+            onDragEnter={handleDragEnter}
+            onDragLeave={handleDragLeave}
+            onDrop={handleDrop}
+          >
+            <label
+              htmlFor="excel-file-input"
+              className="flex h-full w-full items-center justify-center"
+            >
+              <div className="flex cursor-pointer items-center justify-center">
+                <RiFileExcel2Line
+                  className={`text-6xl ${
+                    fileName ? "text-[#1C6C40]" : "text-gray-400"
+                  }`}
+                />
                 <div className="ml-4 text-center">
-                  <div className="text-sm font-medium text-gray-900">
-                    Select a file
+                  <div className="text-lg font-medium text-gray-900">
+                    {fileName ? fileName : "Select a file"}
                   </div>
-                  <div className="text-xs text-gray-500">
-                    or drag and drop here
-                  </div>
+                  {!fileName && (
+                    <div className="text-sm text-gray-500">
+                      Drag and drop file here, or click to browse
+                    </div>
+                  )}
                 </div>
               </div>
             </label>
             <input
               type="file"
               id="excel-file-input"
-              accept=".xlsx, .xls"
+              //   accept=".xlsx, .xls"
               onChange={handleFileInputChange}
               className="sr-only"
             />
           </div>
-          <div className="ml-3">{fileName}</div>
         </div>
       </div>
     </>
