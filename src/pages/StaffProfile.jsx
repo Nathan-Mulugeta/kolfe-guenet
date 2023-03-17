@@ -77,6 +77,7 @@ function StaffProfile() {
 
   useEffect(() => {
     fetchProfileData();
+    // eslint-disable-next-line
   }, []);
 
   return (

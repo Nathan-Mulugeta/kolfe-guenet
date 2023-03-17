@@ -78,7 +78,7 @@ function Staff() {
                         {person.imgUrl ? (
                           <img
                             src={person.imgUrl}
-                            alt="Profile Picture"
+                            alt="Profile"
                             className="h-full w-full object-cover"
                           />
                         ) : (

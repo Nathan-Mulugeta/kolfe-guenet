@@ -1,13 +1,5 @@
 import { useState } from "react";
-import {
-  collection,
-  addDoc,
-  setDoc,
-  doc,
-  getDoc,
-  writeBatch,
-  getCountFromServer,
-} from "firebase/firestore";
+import { collection, doc, getDocs, writeBatch } from "firebase/firestore";
 import { db } from "../firebase.config";
 import * as XLSX from "xlsx";
 import { RiFileExcel2Line } from "react-icons/ri";
@@ -56,10 +48,16 @@ function MembersInput({ setLoading }) {
     try {
       const existingMembers = [];
       const newMembersToAdd = [];
+
+      // TODO: optimize this code so that the document doesn't read everytime but fetch data once and put it in the existing members array
+      const querySnapshot = await getDocs(collection(db, "oldMembers"));
+      const existingMembersId = querySnapshot.map((member) => member.id);
       for (const member of members) {
-        const memberRef = doc(db, "oldMembers", member.id.toString());
-        const docSnapshot = await getDoc(memberRef);
-        if (docSnapshot.exists()) {
+        // const memberRef = doc(db, "oldMembers", member.id.toString());
+        // const docSnapshot = await getDoc(memberRef);
+
+        // if (docSnapshot.exists()) {
+        if (existingMembersId.includes(member.id)) {
           existingMembers.push(member.id);
         } else {
           newMembersToAdd.push(member);

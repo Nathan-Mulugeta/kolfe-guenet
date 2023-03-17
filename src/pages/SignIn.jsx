@@ -9,7 +9,6 @@ import { toast } from "react-toastify";
 import { BsLockFill } from "react-icons/bs";
 import { MdOutlineAdminPanelSettings } from "react-icons/md";
 import Spinner from "../components/Spinner";
-import signInBackground from "../assets/jpg/signInBackground.jpg";
 
 function SignIn() {
   const [loading, setLoading] = useState(false);
