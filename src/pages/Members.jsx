@@ -5,28 +5,55 @@ import {
   startAfter,
   limit,
   getDocs,
+  getCountFromServer,
 } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import Pagination from "../components/Pagination";
 import { db } from "../firebase.config";
+import Spinner from "../components/Spinner";
 
 function Members() {
   const [members, setMembers] = useState([]);
+  const [lastFetchedMember, setLastFetchedMember] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [totalMembers, setTotalMembers] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const fetchMembers = async () => {
     try {
       // Get reference
       const membersRef = collection(db, "oldMembers");
 
+      // Get count
+      const snapshot = await getCountFromServer(membersRef);
+      setTotalMembers(snapshot.data().count);
+
       // Create a query
-      const q = query(membersRef, orderBy("id", "asc"), limit(10));
+      const first = query(membersRef, orderBy("id", "asc"), limit(10));
 
       // Execute query
-      const querySnap = await getDocs(q);
+      let querySnap;
 
-      // const lastVisible = querySnap.docs[querySnap.docs.length - 1]
-      // setLastFetchedListing(lastVisible)
+      if (currentPage === 1) {
+        // Execute query for the first page
+        querySnap = await getDocs(first);
+      } else {
+        // Execute query for subsequent pages
+        // const lastDoc = members[currentPage * 10 - 1];
+        // console.log("If the page is not 1 the last Doc is: ", lastDoc);
+        const next = query(
+          membersRef,
+          orderBy("id", "asc"),
+          startAfter(lastFetchedMember),
+          limit(10)
+        );
+
+        querySnap = await getDocs(next);
+      }
+
+      const lastVisible = querySnap.docs[10 - 1];
+      setLastFetchedMember(lastVisible);
 
       const newMembers = [];
 
@@ -35,23 +62,30 @@ function Members() {
       });
 
       setMembers(newMembers);
-      // setLoading(false);
+      setLoading(false);
     } catch (error) {
-      toast.error("Could not fetch listings");
+      toast.error("Could not fetch members.");
     }
   };
+
   // Fetch users
   useEffect(() => {
     fetchMembers();
-  }, []);
+  }, [currentPage]);
 
   return (
     <div className="mt-16 min-h-screen bg-gray-50">
-      <div className="container mx-auto overflow-hidden">
+      <div className="container relative mx-auto min-h-screen overflow-hidden">
         <h3 className="mb-4 mt-4 block cursor-pointer p-2 text-xl font-bold text-secondary sm:text-2xl">
           Members list
         </h3>
-        <table className="m-4 mx-auto w-full divide-y divide-gray-200 overflow-hidden rounded-md">
+        {loading && (
+          <div className="absolute grid min-h-screen min-w-full place-items-center bg-white/90">
+            {<Spinner />}
+          </div>
+        )}
+
+        <table className=" m-4 mx-auto w-full divide-y divide-gray-200 overflow-hidden rounded-md">
           <thead className="bg-gray-50">
             <tr>
               <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
@@ -88,9 +122,17 @@ function Members() {
             ))}
           </tbody>
         </table>
-        <div className="flex justify-center">
-          <Pagination />
-        </div>
+        {members.length !== 0 && (
+          <div className="my-6 flex justify-center overflow-x-auto">
+            <Pagination
+              currentPage={currentPage}
+              totalPages={Math.ceil(totalMembers / 10)}
+              lastFetchedMember={lastFetchedMember}
+              fetchMembers={fetchMembers}
+              setCurrentPage={setCurrentPage}
+            />
+          </div>
+        )}
       </div>
     </div>
   );
