@@ -6,6 +6,7 @@ import { RiFileExcel2Line } from "react-icons/ri";
 import { toast } from "react-toastify";
 
 const propertyMap = {
+  // excel file column titles on the left ----> the key on the database we want to replace with
   ID: "id",
   "First Name": "firstName",
   "Last Name": "lastName",
@@ -49,16 +50,20 @@ function MembersInput({ setLoading }) {
       const existingMembers = [];
       const newMembersToAdd = [];
 
-      // TODO: optimize this code so that the document doesn't read everytime but fetch data once and put it in the existing members array
       const querySnapshot = await getDocs(collection(db, "oldMembers"));
-      const existingMembersId = querySnapshot.map((member) => member.id);
+
+      toast.info("Started uploading json to database.");
+
+      const existingMembersId = querySnapshot.docs.map((doc) => doc.id);
+
       for (const member of members) {
         // const memberRef = doc(db, "oldMembers", member.id.toString());
         // const docSnapshot = await getDoc(memberRef);
 
         // if (docSnapshot.exists()) {
-        if (existingMembersId.includes(member.id)) {
-          existingMembers.push(member.id);
+
+        if (existingMembersId.includes(member.id.toString())) {
+          existingMembers.push(member);
         } else {
           newMembersToAdd.push(member);
         }
@@ -99,14 +104,14 @@ function MembersInput({ setLoading }) {
       // Log the existing members (if any)
       if (existingMembers.length > 0) {
         toast.info(
-          `The following members id already exists in the database: ${existingMembers.join(
-            ", "
-          )}`
+          `${existingMembers.length} members already exist in the database.`
         );
+        console.log("Existing members: ", existingMembers);
       }
 
       setLoading(false);
     } catch (error) {
+      setLoading(false);
       toast.error("Can't add members right now!");
       console.log(error);
     }
@@ -133,6 +138,7 @@ function MembersInput({ setLoading }) {
 
     try {
       const workbook = await readExcelFile(file);
+      toast.info("Done converting excel to json.");
       const worksheet = workbook.Sheets[workbook.SheetNames[0]];
       const data = XLSX.utils.sheet_to_json(worksheet);
 
@@ -166,7 +172,7 @@ function MembersInput({ setLoading }) {
         }
         return newItem;
       });
-
+      toast.info("Done converting the json to a human readable format.");
       return modifiedData;
     } catch (error) {
       setLoading(false);
@@ -260,7 +266,7 @@ function MembersInput({ setLoading }) {
               type="submit"
               className="btn-secondary btn text-white active:scale-95"
             >
-              Submit
+              Upload
             </button>
           </div>
         </div>
