@@ -13,6 +13,7 @@ import Profile from "./pages/Profile";
 import PrivateRoute from "./components/PrivateRoute";
 import StaffProfile from "./pages/StaffProfile";
 import Members from "./pages/Members";
+import Member from "./pages/Member";
 
 function App() {
   return (
@@ -33,6 +34,9 @@ function App() {
 
             <Route path="/profile" element={<PrivateRoute />}>
               <Route path="/profile" element={<Profile />} />
+            </Route>
+            <Route path="/" element={<PrivateRoute />}>
+              <Route path="members/:memberId" element={<Member />} />
             </Route>
             <Route path="/members" element={<PrivateRoute />}>
               <Route path="/members" element={<Members />} />

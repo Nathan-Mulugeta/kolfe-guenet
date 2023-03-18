@@ -2,11 +2,10 @@ import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
 
 export default function Pagination({
   currentPage,
-  totalPages,
-  fetchMembers,
+  totalMembers,
   setCurrentPage,
 }) {
-  //   const pages = [...Array(totalPages).keys()].map((page) => page + 1);
+  //   const pages = [...Array(totalMembers).keys()].map((page) => page + 1);
   const pages = [...Array(10).keys()].map((page) => page + 1);
 
   const handlePageClick = (page) => {
@@ -43,7 +42,7 @@ export default function Pagination({
             </button>
           ))}
           <button
-            disabled={currentPage === totalPages}
+            disabled={currentPage === Math.ceil(totalMembers / 10)}
             onClick={() => handlePageClick(currentPage + 1)}
             className="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
           >
@@ -53,10 +52,10 @@ export default function Pagination({
         </nav>
         <div className="flex items-center justify-center text-gray-600">
           <span className="mr-2">
-            Showing page {currentPage} of {Math.ceil(totalPages / 10)}
+            Showing page {currentPage} of {Math.ceil(totalMembers / 10)}
           </span>
           <div className="mx-2 h-6 w-px bg-gray-400"></div>
-          <span className="ml-2">{totalPages} members in total</span>
+          <span className="ml-2">{totalMembers} members in total</span>
         </div>
       </div>
     </>

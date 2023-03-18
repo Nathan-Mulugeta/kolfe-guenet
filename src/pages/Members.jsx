@@ -6,21 +6,72 @@ import {
   limit,
   getDocs,
   getCountFromServer,
+  startAt,
 } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import Pagination from "../components/Pagination";
 import { db } from "../firebase.config";
 import Spinner from "../components/Spinner";
+import { Link } from "react-router-dom";
 
 function Members() {
   const [members, setMembers] = useState([]);
   const [lastFetchedMember, setLastFetchedMember] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [totalMembers, setTotalMembers] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
 
+  // const fetchMembers = async () => {
+  //   try {
+  //     // Get reference
+  //     const membersRef = collection(db, "oldMembers");
+
+  //     // Get count
+  //     const snapshot = await getCountFromServer(membersRef);
+  //     setTotalMembers(snapshot.data().count);
+
+  //     // Create a query
+  //     const first = query(membersRef, orderBy("id", "asc"), limit(10));
+
+  //     // Execute query
+  //     let querySnap;
+
+  //     if (currentPage === 1) {
+  //       // Execute query for the first page
+  //       querySnap = await getDocs(first);
+  //     } else {
+  //       // Execute query for subsequent pages
+  //       // const lastDoc = members[currentPage * 10 - 1];
+  //       // console.log("If the page is not 1 the last Doc is: ", lastDoc);
+  //       const next = query(
+  //         membersRef,
+  //         orderBy("id", "asc"),
+  //         startAfter(lastFetchedMember),
+  //         limit(10)
+  //       );
+
+  //       querySnap = await getDocs(next);
+  //     }
+
+  //     const lastVisible = querySnap.docs[10 - 1];
+  //     setLastFetchedMember(lastVisible);
+
+  //     const newMembers = [];
+
+  //     querySnap.forEach((doc) => {
+  //       return newMembers.push(doc.data());
+  //     });
+
+  //     setMembers(newMembers);
+  //     setLoading(false);
+  //   } catch (error) {
+  //     toast.error("Could not fetch members.");
+  //   }
+  // };
+
   const fetchMembers = async () => {
+    setLoading(true);
     try {
       // Get reference
       const membersRef = collection(db, "oldMembers");
@@ -29,36 +80,24 @@ function Members() {
       const snapshot = await getCountFromServer(membersRef);
       setTotalMembers(snapshot.data().count);
 
+      // Calculate the starting point for the query
+      const startIndex = currentPage * 10 + 4;
+
       // Create a query
-      const first = query(membersRef, orderBy("id", "asc"), limit(10));
+      const queryRef = query(
+        membersRef,
+        orderBy("id", "asc"),
+        startAt(startIndex),
+        limit(10)
+      );
 
       // Execute query
-      let querySnap;
-
-      if (currentPage === 1) {
-        // Execute query for the first page
-        querySnap = await getDocs(first);
-      } else {
-        // Execute query for subsequent pages
-        // const lastDoc = members[currentPage * 10 - 1];
-        // console.log("If the page is not 1 the last Doc is: ", lastDoc);
-        const next = query(
-          membersRef,
-          orderBy("id", "asc"),
-          startAfter(lastFetchedMember),
-          limit(10)
-        );
-
-        querySnap = await getDocs(next);
-      }
-
-      const lastVisible = querySnap.docs[10 - 1];
-      setLastFetchedMember(lastVisible);
+      const querySnap = await getDocs(queryRef);
 
       const newMembers = [];
 
       querySnap.forEach((doc) => {
-        return newMembers.push(doc.data());
+        newMembers.push(doc.data());
       });
 
       setMembers(newMembers);
@@ -112,7 +151,7 @@ function Members() {
                   {member.lastName.toLowerCase().charAt(0).toUpperCase() +
                     member.lastName.slice(1)}
                   <span className="ml-4 text-xs text-gray-500 transition-all hover:text-gray-700 hover:underline">
-                    See More
+                    <Link to={`/members/${member.id}`}>See more</Link>
                   </span>
                 </td>
                 <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
@@ -126,7 +165,7 @@ function Members() {
           <div className="my-6 flex justify-center overflow-x-auto">
             <Pagination
               currentPage={currentPage}
-              totalPages={Math.ceil(totalMembers / 10)}
+              totalMembers={totalMembers}
               lastFetchedMember={lastFetchedMember}
               fetchMembers={fetchMembers}
               setCurrentPage={setCurrentPage}
