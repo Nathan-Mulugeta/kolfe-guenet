@@ -38,7 +38,7 @@ function Avatar({ handleSignOut }) {
   useEffect(() => {
     fetchProfileData();
     // eslint-disable-next-line
-  }, [data]);
+  }, []);
 
   return (
     <Menu as="div" className="relative ml-3">
