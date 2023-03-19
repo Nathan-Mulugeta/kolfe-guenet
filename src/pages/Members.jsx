@@ -144,16 +144,18 @@ function Members() {
                 <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
                   {member.id}
                 </td>
-                <td className="whitespace-nowrap px-6 py-4 text-sm font-medium text-gray-900">
-                  {/* Display the name properly as first character uppercase and the rest to be in lowercase */}
-                  {member.firstName.toLowerCase().charAt(0).toUpperCase() +
-                    member.firstName.slice(1)}{" "}
-                  {member.lastName.toLowerCase().charAt(0).toUpperCase() +
-                    member.lastName.slice(1)}
-                  <span className="ml-4 text-xs text-gray-500 transition-all hover:text-gray-700 hover:underline">
-                    <Link to={`/members/${member.id}`}>See more</Link>
-                  </span>
-                </td>
+                <Link to={`/members/${member.id}`}>
+                  <td className="whitespace-nowrap px-6 py-4 text-sm font-medium text-gray-900">
+                    {/* Display the name properly as first character uppercase and the rest to be in lowercase */}
+                    {member.firstName.toLowerCase().charAt(0).toUpperCase() +
+                      member.firstName.slice(1)}{" "}
+                    {member.lastName.toLowerCase().charAt(0).toUpperCase() +
+                      member.lastName.slice(1)}
+                    <span className="ml-4 text-xs text-gray-500 transition-all hover:text-gray-700 hover:underline">
+                      See more
+                    </span>
+                  </td>
+                </Link>
                 <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
                   {member.age}
                 </td>
