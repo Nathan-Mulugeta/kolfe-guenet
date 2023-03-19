@@ -144,8 +144,8 @@ function Members() {
                 <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
                   {member.id}
                 </td>
-                <Link to={`/members/${member.id}`}>
-                  <td className="whitespace-nowrap px-6 py-4 text-sm font-medium text-gray-900">
+                <td className="whitespace-nowrap px-6 py-4 text-sm font-medium text-gray-900">
+                  <Link to={`/members/${member.id}`}>
                     {/* Display the name properly as first character uppercase and the rest to be in lowercase */}
                     {member.firstName.toLowerCase().charAt(0).toUpperCase() +
                       member.firstName.slice(1)}{" "}
@@ -154,8 +154,8 @@ function Members() {
                     <span className="ml-4 text-xs text-gray-500 transition-all hover:text-gray-700 hover:underline">
                       See more
                     </span>
-                  </td>
-                </Link>
+                  </Link>
+                </td>
                 <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
                   {member.age}
                 </td>

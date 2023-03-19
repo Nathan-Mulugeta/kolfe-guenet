@@ -53,7 +53,11 @@ function Member() {
     return age;
   }
 
-  let age = calculateAge(memberData.dateOfBirth);
+  let age;
+
+  if (memberData.dateOfBirth) {
+    age = calculateAge(memberData.dateOfBirth);
+  }
 
   if (loading)
     return (
@@ -102,10 +106,11 @@ function Member() {
                 {/* Age */}
                 <div className="p-3 text-center">
                   <span className="text-sm text-slate-400">Age</span>
-                  <span className="block text-xl font-bold uppercase tracking-wide text-slate-700">
-                    {age}
+                  <span className="block text-xl font-bold tracking-wide text-slate-700">
+                    {age ?? "Unknown"}
                   </span>
                 </div>
+
                 {/* Gender */}
                 <div className="p-3 text-center">
                   <span className="text-sm text-slate-400">Gender</span>
@@ -123,30 +128,35 @@ function Member() {
                   </span>
                   <p className="text-sm text-slate-400">
                     {memberData.maritalStatus === "Married" ? (
-                      <>on ({memberData.dateOfMarriage})</>
+                      <>
+                        {memberData.dateOfMarriage && (
+                          <>(on {memberData.dateOfMarriage})</>
+                        )}
+                      </>
                     ) : (
                       ""
                     )}
                   </p>
                 </div>
-                {memberData.maritalStatus === "Married" && (
-                  <div className="p-3 text-center">
-                    <span className="text-sm text-slate-400">Married to</span>
-                    <span className="block text-xl font-bold tracking-wide text-slate-700">
-                      {
-                        memberData.marriedTo
-                          .split(" ") // Split the name into an array of first and last names
-                          .map((name) => {
-                            return (
-                              name.charAt(0).toUpperCase() +
-                              name.substring(1).toLowerCase()
-                            );
-                          })
-                          .join(" ") // Join the names back into a string
-                      }
-                    </span>
-                  </div>
-                )}
+                {memberData.maritalStatus === "Married" &&
+                  memberData.marriedTo && (
+                    <div className="p-3 text-center">
+                      <span className="text-sm text-slate-400">Married to</span>
+                      <span className="block text-xl font-bold tracking-wide text-slate-700">
+                        {
+                          memberData.marriedTo
+                            .split(" ") // Split the name into an array of first and last names
+                            .map((name) => {
+                              return (
+                                name.charAt(0).toUpperCase() +
+                                name.substring(1).toLowerCase()
+                              );
+                            })
+                            .join(" ") // Join the names back into a string
+                        }
+                      </span>
+                    </div>
+                  )}
 
                 {/* Academic status */}
                 {memberData.academics && (
