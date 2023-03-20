@@ -58,7 +58,6 @@ function Members() {
           membersRef,
           where("firstName", ">=", searchValue),
           where("firstName", "<=", endValue),
-          // orderBy("id", "asc"),
           limit(10)
         );
 
@@ -118,7 +117,6 @@ function Members() {
         membersRef,
         where("firstName", ">=", searchValue),
         where("firstName", "<=", endValue),
-        // orderBy("id", "asc"),
         startAfter(lastFetchedMember),
         limit(10)
       );
@@ -170,12 +168,14 @@ function Members() {
         <h3 className="mb-4 mt-4 block cursor-pointer p-2 text-xl font-bold text-secondary sm:text-2xl">
           Members list
         </h3>
-        <Search
-          setSearchResultsCount={setSearchResultsCount}
-          searchResultsCount={searchResultsCount}
-          searchField={searchField}
-          setSearchField={setSearchField}
-        />
+        <div className="grid grid-cols-1 sm:grid-cols-2">
+          <Search
+            setSearchResultsCount={setSearchResultsCount}
+            searchResultsCount={searchResultsCount}
+            searchField={searchField}
+            setSearchField={setSearchField}
+          />
+        </div>
         {loading && (
           <div className="absolute grid min-h-full min-w-full place-items-center bg-white/90">
             {<Spinner />}
@@ -252,7 +252,7 @@ function Members() {
             <div className="m-4 flex justify-center">
               <button
                 onClick={onFetchMoreMembers}
-                className="btn-secondary btn"
+                className="btn-outline btn-secondary btn"
               >
                 Load {searchResultsCount - members.length} more
               </button>

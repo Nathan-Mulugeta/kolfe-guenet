@@ -16,27 +16,30 @@ function Search({
     <div className="form-control">
       <div className="input-group px-2">
         <input
+          id="search"
           value={searchField}
           onChange={handleChange}
           type="text"
           placeholder="Search…"
-          className="input-bordered input w-full sm:w-1/2"
+          className="input-bordered input w-full"
         />
         <button className="btn-secondary btn-square btn" onClick={handleSearch}>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-            />
-          </svg>
+          <label htmlFor="search">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+              />
+            </svg>
+          </label>
         </button>
       </div>
       {searchField && (
@@ -53,7 +56,7 @@ function Search({
           </button>
           <p className="m-4 flex justify-center gap-2 text-center text-lg font-bold">
             Total search results:{" "}
-            <span class="text-blue-500">{searchResultsCount}</span>
+            <span className="text-blue-500">{searchResultsCount}</span>
           </p>
         </>
       )}

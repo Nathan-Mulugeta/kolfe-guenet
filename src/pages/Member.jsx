@@ -143,17 +143,15 @@ function Member() {
                     <div className="p-3 text-center">
                       <span className="text-sm text-slate-400">Married to</span>
                       <span className="block text-xl font-bold tracking-wide text-slate-700">
-                        {
-                          memberData.marriedTo
-                            .split(" ") // Split the name into an array of first and last names
-                            .map((name) => {
-                              return (
-                                name.charAt(0).toUpperCase() +
-                                name.substring(1).toLowerCase()
-                              );
-                            })
-                            .join(" ") // Join the names back into a string
-                        }
+                        {memberData.marriedTo
+                          .split(" ")
+                          .map((name) => {
+                            return (
+                              name.charAt(0).toUpperCase() +
+                              name.substring(1).toLowerCase()
+                            );
+                          })
+                          .join(" ")}
                       </span>
                     </div>
                   )}
@@ -231,7 +229,15 @@ function Member() {
                       Kifle Ketema
                     </span>
                     <span className="block text-xl font-bold tracking-wide text-slate-700">
-                      {memberData.kifleKetema}
+                      {memberData.kifleKetema
+                        .split(" ")
+                        .map((kifleKetema) => {
+                          return (
+                            kifleKetema.charAt(0).toUpperCase() +
+                            kifleKetema.substring(1).toLowerCase()
+                          );
+                        })
+                        .join(" ")}
                     </span>
                   </div>
                 )}
@@ -299,7 +305,8 @@ function Member() {
                       First Language
                     </span>
                     <span className="block text-xl font-bold tracking-wide text-slate-700">
-                      {memberData.firstLanguage}
+                      {memberData.firstLanguage.charAt(0).toUpperCase() +
+                        memberData.firstLanguage.substring(1).toLowerCase()}
                     </span>
                   </div>
                 )}
@@ -388,7 +395,8 @@ function Member() {
                       Currently live in
                     </span>
                     <span className="block text-xl font-bold tracking-wide text-slate-700">
-                      {memberData.whereTheyLive}
+                      {memberData.whereTheyLive.charAt(0).toUpperCase() +
+                        memberData.whereTheyLive.substring(1).toLowerCase()}
                     </span>
                   </div>
                 )}
