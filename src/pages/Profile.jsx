@@ -672,12 +672,12 @@ function Profile() {
                   </div>
                 )}
               </form>
-              <h3 className="mx-auto my-2 text-5xl font-bold text-secondary">
-                Admin access
-              </h3>
 
               {uid === "BiNlXxsG9keRM2yRPb7V3Msmwb82" && (
                 <>
+                  <h3 className="mx-auto my-2 text-5xl font-bold text-secondary">
+                    Admin access
+                  </h3>
                   <CreateStaffMember
                     setLoading={setLoading}
                     setModalOpen={setModalOpen}

@@ -57,11 +57,6 @@ function MembersInput({ setLoading }) {
       const existingMembersId = querySnapshot.docs.map((doc) => doc.id);
 
       for (const member of members) {
-        // const memberRef = doc(db, "oldMembers", member.id.toString());
-        // const docSnapshot = await getDoc(memberRef);
-
-        // if (docSnapshot.exists()) {
-
         if (existingMembersId.includes(member.id.toString())) {
           existingMembers.push(member);
         } else {
@@ -169,9 +164,31 @@ function MembersInput({ setLoading }) {
           } else {
             newItem[newKey] = item[oldKey];
           }
+
+          if (
+            oldKey === "First Name" ||
+            oldKey === "Last Name" ||
+            oldKey === "Gender" ||
+            oldKey === "Marital Status" ||
+            oldKey === "Accadamics" ||
+            oldKey === "Married to" ||
+            oldKey === "City" ||
+            oldKey === "Kifle-Ketema" ||
+            oldKey === "FirstLanguage" ||
+            oldKey === "ChurchService" ||
+            oldKey === "where they live"
+          ) {
+            if (item[oldKey]) {
+              // Convert to lower case if exists
+              newItem[newKey] = item[oldKey].toLowerCase();
+            } else {
+              newItem[newKey] = item[oldKey];
+            }
+          }
         }
         return newItem;
       });
+
       toast.info("Done converting the json to a human readable format.");
       return modifiedData;
     } catch (error) {
