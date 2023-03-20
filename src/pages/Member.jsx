@@ -78,8 +78,8 @@ function Member() {
               <div className="relative">
                 <div className="relative -mt-16 grid h-[150px] w-[150px] place-items-center overflow-hidden rounded-full bg-gray-400 text-6xl text-white shadow-xl">
                   <>
-                    {memberData.firstName.charAt(0)}
-                    {memberData.lastName.charAt(0)}
+                    {memberData.firstName.charAt(0).toUpperCase()}
+                    {memberData.lastName.charAt(0).toUpperCase()}
                   </>
                 </div>
               </div>
